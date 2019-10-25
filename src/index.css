@@ -1,0 +1,153 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+header .contenedor {
+  display: flex;
+  justify-content: space-between;
+}
+
+header ul {
+  display: flex;
+}
+
+header ul li {
+  list-style: none;
+  margin-right: 15px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.contenedor {
+  max-width: 1280px;
+  width: 90%;
+  margin: auto;
+}
+
+#selector-destino {
+  text-align: center;
+  height: 6.5px;
+  width: 267px;
+  padding: 18px 0;
+} 
+
+#selector-fecha {
+  text-align: center;
+  height: 43px;
+}
+
+#selector-personas {
+  text-align: center;
+  height: 41px;
+  width: 50px;
+}
+
+header {
+  background: linear-gradient(rgba(84,93,220,.9), rgba(96,171,245,.9)), url(../src/images/flight.jpg);
+  height: 100vh;
+  background-size: cover;
+}
+
+#contenedor-titulo-flex {
+  display: flex;
+  justify-content: center;
+  margin: 18vh 0;
+  width: 100%;
+} 
+
+h1 {
+  font-size: 60px;
+  color: #fff;
+  margin: 0;
+}
+
+h2 {
+  font-size: 25px;
+  color: #fff;
+}
+
+.contenedor-titulo {
+  text-align: center;
+}
+
+.contenedor-titulo a, #sobre-mi a, #blog a, #que-esperas a, #contacto input[type="submit"] {
+  font-size: 14px;
+  color: #fff;
+  background: #5cb8ff;
+  padding: 14px 24px;
+  width: 128px;
+  display: inline-block;
+}
+
+p.logo {
+  color: #fff;
+  font-size: 20px;
+}
+
+nav ul li a {
+  color: #fff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.menu-icon {
+  display: none;
+}
+
+@media (max-width: 800px) {
+
+.menu-icon {
+  display: block;
+  float: right;
+  width: 40px;
+  height: 35px;
+  margin-top: 15px;
+}
+
+header nav {
+  position: absolute;
+  top: 83px;
+  left: 0;
+  height: 268px;
+  background: #5cb8ff;
+  width: 100%;
+  display: none;
+}
+
+header nav ul {
+  flex-direction: column;
+}
+
+header nav ul li {
+  margin-bottom: 15px;
+}
+
+h1 {
+  font-size: 44px;
+}
+
+h2 {
+  font-size: 19px;
+}
+
+.contenedor-servicios {
+    flex-direction: column;
+}
+
+.servicio {
+   width: 82%;
+   padding: 34px 30px 69px 30px;
+}
+
+}
+
+@media (min-width: 600px) and (max-width:800px) {
+  header {
+    height: 70vh;
+  }
+}

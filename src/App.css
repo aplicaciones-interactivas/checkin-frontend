@@ -1,0 +1,29 @@
+.contenedor-hoteles{
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.contenedor-filtros form {
+  padding: 20px;
+  margin-left: 20px;
+  background-color: khaki;
+  text-align: center;
+  border-radius: 25px;
+
+}
+
+.hotel {
+  margin: 10px;
+}
+
+.hoteles {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row-reverse;
+}
+
+.contenedor-otros_filtros {
+  display: flex;
+}
