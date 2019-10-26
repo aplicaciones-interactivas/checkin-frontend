@@ -7,10 +7,13 @@ import MaterialUIPickers from './components/datePicker';
 import InputField from './components/inputPeople';
 import Buttons from  './components/primaryButton';
 import TransitionsModal from './components/modal';
-import FormControlLabelPosition from './components/checkBox'
+import FormControlLabelPosition from './components/checkBox';
+import {BrowserRouter as Router, Link} from 'react-router-dom';
+import Route from 'react-router-dom/Route';
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
 
 function App() {
-   
   const results = [
     {
     nombre: "Sheraton",
@@ -55,12 +58,28 @@ const handleClose = () => {
   setOpen(false);
 };
 
+const HomePage = () => {
+return <Home desde={<MaterialUIPickers label="Desde"/>} hasta={<MaterialUIPickers label="Hasta"/>}/>;
+};
+
+const SigningIn = () => {
+  return <SignIn/>;
+};
+
+const SigningUp = () => {
+  return <SignUp/>;
+};
+
   return (
-  
-  <div class="principal">  
+    <Router>
+  <div class="principal">
   <div class="home">
-      <Home/>
+  <Route path="/" exact strict component={HomePage}/>
+  <Route path="/SignIn" exact strict component={SigningIn}/>
+  <Route path="/SignUp" exact strict component={SigningUp}/>
   </div>
+  <Route path="/Hoteles" exact strict render={
+    () => {return (
   <div class="hoteles" id="hoteles">
     <div class="contenedor-hoteles">
       {results.map(hotel => <div class="hotel"><ImgMediaCard hotel={hotel} handleOpen={handleOpen}/></div>)}
@@ -82,12 +101,10 @@ const handleClose = () => {
         </div>
     </div>
   </div>
-  <div>
-
-  </div>
+  );}}/>
   <TransitionsModal open={open} handleClose={handleClose}/>
   </div>
-  
+  </Router>
   );
 }
 

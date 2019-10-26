@@ -1,10 +1,10 @@
 import React from 'react'
 import '../index.css';
+import {Link} from 'react-router-dom';
 
-
-export default function Home (){
-    return(
-       <header>
+export default function Home ({desde, hasta}){
+    return( 
+      <header>
            <head>
                 <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet"/>
                 <meta name="viewport" content="width=device-width, user-scalable=no"/>
@@ -17,8 +17,8 @@ export default function Home (){
                 <img class="menu-icon" src="../images/menu.png" alt=""/>
                 <nav>
                     <ul class="lista-menu">
-                    <li><a href="#">Login</a></li>
-                    <li><a href="#">Signup</a></li>
+                    <li><Link to="/SignIn">Login</Link></li> 
+                    <li><Link to="/SignUp">SignUp</Link></li>
                     </ul>
                 </nav>
                 </div>
@@ -31,7 +31,7 @@ export default function Home (){
                 <input type="date" id="selector-fecha"/>
                 <input type="date" id="selector-fecha"/>
                 <input type="number" id="selector-personas"/>
-                <a href="#hoteles">Buscar</a>
+                <Link to="/Hoteles">Buscar</Link>
             </div>
             </div>
         </header>
