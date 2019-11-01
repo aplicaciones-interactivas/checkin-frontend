@@ -7,23 +7,28 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles({
     card: {
-      maxWidth: 345,
-      minHeight: 280,
-      minWidth: 300,
+      minWidth: 310,
+      height: 350,
+      padding: 0,
+      margin: 0,
     },
     media: {
-      height: 0,
-      paddingTop: '56.25%',
-      marginTop: '30',
+      height: 250,
+      maxHeight: 250,
+      minWidth: 310,
+    },
+    content: {
+      padding: 8,
     }
   });
   
   export default function ImgMediaCard({hotel, handleOpen}) {
     const classes = useStyles();
-  
+    const h = hotel;
     return (
       <Card className={classes.card}>
         <CardActionArea>
@@ -34,12 +39,9 @@ const useStyles = makeStyles({
             src={require("../images/descarga.jpg")}
             title="Hotel"
           />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              Lizard
-            </Typography>
+          <CardContent className={classes.content}>
             <Typography variant="body2" color="textSecondary" component="p">
-              {hotel.nombre}
+              {hotel.nombre} {hotel.estrellas}
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -48,7 +50,10 @@ const useStyles = makeStyles({
             Reservar
           </Button>
           <Button size="small" color="primary">
-            Más Info
+            <Link to={{
+              pathname:"/InfoHotel",
+              hotelInfo:h
+                }}>Más info</Link>
           </Button>
         </CardActions>
       </Card>

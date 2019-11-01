@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 export default function Home ({desde, hasta}){
     return( 
-      <header>
+      <div class="header">
            <head>
                 <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet"/>
                 <meta name="viewport" content="width=device-width, user-scalable=no"/>
@@ -31,9 +31,9 @@ export default function Home ({desde, hasta}){
                 <input type="date" id="selector-fecha"/>
                 <input type="date" id="selector-fecha"/>
                 <input type="number" id="selector-personas"/>
-                <Link to="/Hoteles">Buscar</Link>
+                <Link to="/Hoteles">Buscar</Link> {/*Query To localhost:3200/HotelesConFiltro*/}
             </div>
             </div>
-        </header>
+        </div>
     )
 }

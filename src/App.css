@@ -27,5 +27,6 @@
 .contenedor-otros_filtros {
   display: flex;
   flex-direction: column;
-  padding: 30px;
+  margin-top: 10px;
+  padding-left: 30px;
 }

@@ -8,44 +8,54 @@ import InputField from './components/inputPeople';
 import Buttons from  './components/primaryButton';
 import TransitionsModal from './components/modal';
 import FormControlLabelPosition from './components/checkBox';
-import {BrowserRouter as Router, Link} from 'react-router-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 import Route from 'react-router-dom/Route';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import HotelInfo from './components/hotelInfo';
+import ButtonAppBar from './components/appBar';
 
 function App() {
   const results = [
     {
     nombre: "Sheraton",
     precio: "150",
-    ubicacion: "Buenos Aires"
+    ubicacion: "Buenos Aires",
+    estrellas: "5"
   },
   {
     nombre: "Hilton",
     precio: "100",
-    ubicacion: "Buenos Aires"
+    ubicacion: "Rosario",
+    estrellas: "5"
   },
   {
-    nombre: "Hilton",
+    nombre: "Milton",
     precio: "100",
-    ubicacion: "Buenos Aires"
+    ubicacion: "Cordoba",
+    estrellas: "3"
   },
   {
-    nombre: "Hilton",
+    nombre: "Los Andes Apart",
     precio: "100",
-    ubicacion: "Buenos Aires"
+    ubicacion: "Misiones",
+    estrellas: "3"
   },
   {
-    nombre: "Hilton",
+    nombre: "Pestilloso",
     precio: "100",
-    ubicacion: "Buenos Aires"
+    ubicacion: "Jujuy",
+    estrellas: "1"
   },
   {
-    nombre: "Hilton",
+    nombre: "Howard Jhonson",
     precio: "100",
-    ubicacion: "Buenos Aires"
+    ubicacion: "Buenos Aires",
+    estrellas: "5"
   },
 ]
+
+//const results = fetch('localhost:3200/Hoteles')
 
 
 const [open, setOpen] = React.useState(false);
@@ -70,17 +80,24 @@ const SigningUp = () => {
   return <SignUp/>;
 };
 
+const MoreInfo = (props) => {
+  return <HotelInfo p={props.location.hotelInfo}/>;
+};
+
   return (
     <Router>
   <div class="principal">
-  <div class="home">
+  <Route path="/InfoHotel" exact strict component={MoreInfo}/>
   <Route path="/" exact strict component={HomePage}/>
   <Route path="/SignIn" exact strict component={SigningIn}/>
   <Route path="/SignUp" exact strict component={SigningUp}/>
+  <div class="home">
   </div>
   <Route path="/Hoteles" exact strict render={
     () => {return (
-  <div class="hoteles" id="hoteles">
+  <div class="Busqueda">
+    <ButtonAppBar/>
+  <div class="hoteles">
     <div class="contenedor-hoteles">
       {results.map(hotel => <div class="hotel"><ImgMediaCard hotel={hotel} handleOpen={handleOpen}/></div>)}
     </div>
@@ -91,6 +108,7 @@ const SigningUp = () => {
           <MaterialUIPickers label="Hasta"/>
           <InputField/>
           <Buttons id="formButton"/>
+        {/*fetch(onclick)*/}
         </form>
         <div class="contenedor-otros_filtros">
             <FormControlLabelPosition nameLabel="1 estrella"/>
@@ -100,6 +118,7 @@ const SigningUp = () => {
             <FormControlLabelPosition nameLabel="5 estrellas"/>
         </div>
     </div>
+  </div>
   </div>
   );}}/>
   <TransitionsModal open={open} handleClose={handleClose}/>

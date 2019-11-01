@@ -38,8 +38,8 @@ export default function TransitionsModal({open, handleClose}) {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">react-transition-group animates me.</p>
+            <h2 id="transition-modal-title">Reserva</h2>
+            <p id="transition-modal-description"></p>
             <button type="button" onClick={handleClose}>
                 Close
             </button>

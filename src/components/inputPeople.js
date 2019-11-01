@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      width: 190,
+      width: 130,
       textAlign: 'center',
     },
     dense: {
@@ -33,7 +33,7 @@ export default function InputField() {
     return (
         <TextField
                 id="standard-number"
-                label="Cantidad de Personas"
+                label="Personas"
                 value={values.people}
                 onChange={handleChange('people')}
                 type="number"

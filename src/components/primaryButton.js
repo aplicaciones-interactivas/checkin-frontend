@@ -16,7 +16,7 @@ export default function Buttons() {
 
   return (
     <div>
-    <Button variant="contained" color="primary" className={classes.button}>
+    <Button variant="contained" color="primary" type="submit" className={classes.button}>
         Buscar
       </Button>
     </div>
