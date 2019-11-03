@@ -1,11 +1,8 @@
 import React, {Component} from 'react'
 import '../index.css';
-import {Link} from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import {Button, Col, Container, Row} from "react-bootstrap";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 
 export default class Home extends Component {
 
@@ -30,48 +27,47 @@ export default class Home extends Component {
                     </Navbar.Collapse>
                 </Navbar>
                 <Row className='mt-5'>
-                    <Col xs={12}>
+                    <Col>
                         <h1 className="text-center white">Check-In</h1>
-                        <h4 className="text-center white">Find your ideal hotel worldwide at the best price</h4>
+                        <h4 className="text-center white">Hace check-in en los mejores hoteles en todo el mundo al mejor
+                            precio</h4>
                     </Col>
                 </Row>
                 <Row>
-                    <Col>
-                        <InputGroup className="mb-3">
-                            <FormControl
-                                placeholder="Where are you go?"
-                                aria-label="where-u-go"
-                            />
-                            <InputGroup.Prepend>
-                                <InputGroup.Text>From</InputGroup.Text>
-                            </InputGroup.Prepend>
-                            <FormControl type={'date'}></FormControl>
-                            <InputGroup.Prepend>
-                                <InputGroup.Text>To</InputGroup.Text>
-                            </InputGroup.Prepend>
-                            <FormControl type={'date'}></FormControl>
-                            <InputGroup.Prepend>
-                                <InputGroup.Text>Persons</InputGroup.Text>
-                            </InputGroup.Prepend>
-                            <FormControl type={'number'}></FormControl>
-                            <Button href={"/Hoteles"}>Search</Button>
-                        </InputGroup>
+                    <Col lg={{span: 10, offset: 1}} md={{span: 10, offset: 1}}>
+                        <Form>
+                            <Form.Row className={'justify-content-center'}>
+                                <Col xs={12} md={12} lg={4}>
+                                    <Form.Label className={'font-label'}>¿A donde vas?</Form.Label>
+                                    <Form.Control/>
+                                </Col>
+                                <Col xs={12} md={12} lg={2}>
+                                    <Form.Label className={'font-label'}>¿Cuándo llegas?</Form.Label>
+                                    <Form.Control type={'date'}></Form.Control>
+                                </Col>
+                                <Col xs={12} md={12} lg={2}>
+
+                                    <Form.Label className={'font-label'}>¿Cuándo te vas?</Form.Label>
+                                    <Form.Control type={'date'}></Form.Control>
+                                </Col>
+                                <Col xs={12} md={12} lg={1}>
+                                    <Form.Label className={'font-label'}>Personas</Form.Label>
+                                    <Form.Control
+                                        type={'number'}
+                                    />
+                                </Col>
+                            </Form.Row>
+                            <Form.Row className={'justify-content-center'}>
+                                <Col xs={12} md={12} lg={9}>
+                                    <Button className={'w-100 mt-2'} href={"/Hoteles"}>Search</Button>
+                                </Col>
+                            </Form.Row>
+                        </Form>
+
 
                     </Col>
                 </Row>
             </Container>
-            /*<div class="contenedor" id="contenedor-titulo-flex">
-                <div class="contenedor-titulo">
-                    <h1>Check-In</h1>
-                    <h2>Hacé Check-In en los mejores hoteles</h2>
-                    <input type="text" placeholder="¿A dónde vas?" id="selector-destino"/>
-                    <input type="date" id="selector-fecha"/>
-                    <input type="date" id="selector-fecha"/>
-                    <input type="number" id="selector-personas"/>
-                    <Link to="/Hoteles">Buscar</Link>
-                </div>
-            </div>*/
-
         )
     }
 }

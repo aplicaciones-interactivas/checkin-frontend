@@ -2,6 +2,11 @@
     color: #fff !important;
 }
 
+.font-label {
+    color: #ffffff !important;
+    font-size: 10px !important;
+}
+
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
