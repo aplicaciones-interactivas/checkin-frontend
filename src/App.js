@@ -1,20 +1,20 @@
 import React from 'react';
 import './App.css';
 import Home from './components/Home';
-import ImgMediaCard from './components/navMain';
-import IntegrationReactSelect from './components/searchCountry';
-import MaterialUIPickers from './components/datePicker';
-import InputField from './components/inputPeople';
-import Buttons from './components/primaryButton';
-import TransitionsModal from './components/modal';
-import FormControlLabelPosition from './components/checkBox';
 import {BrowserRouter as Router} from 'react-router-dom';
 import Route from 'react-router-dom/Route';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import HotelInfo from './components/hotelInfo';
-import ButtonAppBar from './components/appBar';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import {makeStyles} from "@material-ui/core";
+import NavBar from "./components/NavBar";
+
+const styles = makeStyles(theme => ({
+    title: {
+        flexGrow: 1,
+    },
+}));
+
 
 function App() {
     const results = [
@@ -56,9 +56,6 @@ function App() {
         },
     ]
 
-//const results = fetch('localhost:3200/Hoteles')
-
-
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => {
@@ -88,6 +85,7 @@ function App() {
     return (
         <Router>
             <div class="principal">
+                <NavBar/>
                 <Route path="/InfoHotel" exact strict component={MoreInfo}/>
                 <Route path="/" exact strict component={HomePage}/>
                 <Route path="/SignIn" exact strict component={SigningIn}/>

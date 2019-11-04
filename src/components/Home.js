@@ -1,73 +1,163 @@
-import React, {Component} from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import '../index.css';
-import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import Typography from "@material-ui/core/Typography";
+import {withStyles} from '@material-ui/core/styles';
+import Grid from "@material-ui/core/Grid";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import {KeyboardDatePicker,MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import PlacesAutocomplete from 'react-places-autocomplete';
 
-export default class Home extends Component {
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1
+    },
+    titulo: {
+        margin: '150px 0px 0px 0px',
+        color: '#3f51b5'
+    },
+    subtitulo: {
+        color: '#3f51b5'
+    },
+    formControlWrapper: {
+        margin: "10px 0px 0px 0px",
+    },
+    formControl: {
+        margin: "0px 0px 0px 0px",
+        width: '100%',
+    },
+    formControlButton: {
+        height: '100%',
+    },
+    white_row: {
+        background: 'white',
+        borderRadius: '5px',
+        padding: '10px 10px 15px 10px',
+        margin: '10px 0px 0px 0px',
+    }
+});
 
+class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            from: new Date().toISOString(),
-            until: new Date().toISOString(),
-        };
+        this.state = {}
+        this.dondeVasInputOnChange = this.dondeVasInputOnChange.bind(this);
+    }
+
+    trim(string) {
+        if (string) {
+            return string.trim();
+        }
+    }
+
+    async dondeVasInputOnChange(event) {
+        let destiny = event.target.value.split(',');
+        await this.setState({destination: {city: this.trim(destiny[0]), country: this.trim(destiny[1])}});
+        console.log(this.state);
     }
 
     render() {
+        const {classes} = this.props;
         return (
-            <Container fluid={true} className={"header"}>
-                <Navbar variant="dark">
-                    <Navbar.Brand href="/">Check-In</Navbar.Brand>
-                    <Navbar.Collapse className="justify-content-end">
-                        <Nav>
-                            <Nav.Link href="/SignIn">Sign in</Nav.Link>
-                            <Nav.Link href="/SignUp">Sign up</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
-                <Row className='mt-5'>
-                    <Col>
-                        <h1 className="text-center white">Check-In</h1>
-                        <h4 className="text-center white">Hace check-in en los mejores hoteles en todo el mundo al mejor
-                            precio</h4>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col lg={{span: 10, offset: 1}} md={{span: 10, offset: 1}}>
-                        <Form>
-                            <Form.Row className={'justify-content-center'}>
-                                <Col xs={12} md={12} lg={4}>
-                                    <Form.Label className={'font-label'}>¿A donde vas?</Form.Label>
-                                    <Form.Control/>
-                                </Col>
-                                <Col xs={12} md={12} lg={2}>
-                                    <Form.Label className={'font-label'}>¿Cuándo llegas?</Form.Label>
-                                    <Form.Control type={'date'}></Form.Control>
-                                </Col>
-                                <Col xs={12} md={12} lg={2}>
-
-                                    <Form.Label className={'font-label'}>¿Cuándo te vas?</Form.Label>
-                                    <Form.Control type={'date'}></Form.Control>
-                                </Col>
-                                <Col xs={12} md={12} lg={1}>
-                                    <Form.Label className={'font-label'}>Personas</Form.Label>
-                                    <Form.Control
-                                        type={'number'}
-                                    />
-                                </Col>
-                            </Form.Row>
-                            <Form.Row className={'justify-content-center'}>
-                                <Col xs={12} md={12} lg={9}>
-                                    <Button className={'w-100 mt-2'} href={"/Hoteles"}>Search</Button>
-                                </Col>
-                            </Form.Row>
-                        </Form>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <div className={classes.root}>
+                    <Grid container direction={'row'} className={'backgroud-container container-fluid'}
+                          align="center"
+                          justify="center">
+                        <Grid item direction={'column'}>
+                            <Typography variant={'h1'} className={classes.titulo}>Check-In</Typography>
+                            <Typography className={classes.subtitulo}>Hace check-in en los mejores hoteles del
+                                mundo, al mejor precio</Typography>
+                            <div className={classes.white_row}>
+                                <Grid container direction={'row'}>
+                                    <Grid item direction={'column'} xs={12} className={classes.formControlWrapper}>
+                                        <FormControl className={classes.formControl} align={'left'}
+                                                     justify={'left'}
+                                                     variant="outlined">
+                                            <InputLabel htmlFor="donde-vas-input">
+                                                ¿A donde vas?
+                                            </InputLabel>
+                                            <OutlinedInput
+                                                id="donde-vas-input"
+                                                labelWidth={105}
+                                                onChange={this.dondeVasInputOnChange}
+                                            />
+                                        </FormControl>
 
 
-                    </Col>
-                </Row>
-            </Container>
-        )
+                                    </Grid>
+                                </Grid>
+                                <Grid container direction={'row'} spacing={1}>
+                                    <Grid item direction={'column'} xs={12} md={4}
+                                          className={classes.formControlWrapper}>
+                                        <KeyboardDatePicker
+                                            className={classes.formControl}
+                                            align={'left'} justify={'left'}
+                                            disableToolbar
+                                            inputVariant="outlined"
+                                            format="MM/dd/yyyy"
+                                            margin="normal"
+                                            id="date-picker-inline"
+                                            label="¿Cuando llegas?"
+                                        />
+                                    </Grid>
+                                    <Grid item direction={'column'} xs={12} md={4}
+                                          className={classes.formControlWrapper}>
+                                        <KeyboardDatePicker
+                                            className={classes.formControl}
+                                            align={'left'} justify={'left'}
+                                            disableToolbar
+                                            inputVariant="outlined"
+                                            format="MM/dd/yyyy"
+                                            margin="normal"
+                                            id="date-picker-inline"
+                                            label="¿Cuando te vas?"
+                                        />
+                                    </Grid>
+                                    <Grid item direction={'column'} xs={12} md={2}
+                                          className={classes.formControlWrapper}>
+                                        <FormControl className={classes.formControl} align={'left'} justify={'left'}
+                                                     variant="outlined">
+                                            <InputLabel htmlFor="component-outlined">
+                                                Personas
+                                            </InputLabel>
+                                            <OutlinedInput
+                                                type={'number'}
+                                                id="component-outlined"
+                                                labelWidth={70}
+                                            />
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item direction={'column'} xs={12} md={2}
+                                          className={classes.formControlWrapper}>
+                                        <Button variant="contained"
+                                                className={`${classes.formControl} ${classes.formControlButton}`}
+                                                color="primary">
+                                            Buscar
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </div>
+                        </Grid>
+                    </Grid>
+                </div>
+            </MuiPickersUtilsProvider>
+        );
     }
 }
+
+Home.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Home);
