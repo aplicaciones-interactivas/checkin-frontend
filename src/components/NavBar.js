@@ -1,12 +1,11 @@
 import React from 'react';
-import {makeStyles, withStyles} from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
 import PropTypes, {instanceOf} from "prop-types";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import {Cookies, withCookies} from "react-cookie";
-import composeHooks from 'react-hooks-compose';
 
 const styles = theme => ({
     root: {

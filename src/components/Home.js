@@ -8,9 +8,9 @@ import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
-import {KeyboardDatePicker,MuiPickersUtilsProvider} from "@material-ui/pickers";
+import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import PlacesAutocomplete from 'react-places-autocomplete';
+import GoogleMaps from './GoogleMaps';
 
 const styles = theme => ({
     root: {
@@ -44,14 +44,21 @@ const styles = theme => ({
         borderRadius: '5px',
         padding: '10px 10px 15px 10px',
         margin: '10px 0px 0px 0px',
+        maxWidth: '810px'
     }
 });
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {from: null, until: null};
         this.dondeVasInputOnChange = this.dondeVasInputOnChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.getCityInfo = this.getCityInfo.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.getFromDate = this.getFromDate.bind(this);
+        this.getUntilDate = this.getUntilDate.bind(this);
+        this.getPersons = this.getPersons.bind(this);
     }
 
     trim(string) {
@@ -60,10 +67,35 @@ class Home extends React.Component {
         }
     }
 
+    handleChange(address) {
+        this.setState({address});
+    }
+
+    handleClick(event) {
+        console.log(this.state);
+    }
+
+
     async dondeVasInputOnChange(event) {
         let destiny = event.target.value.split(',');
         await this.setState({destination: {city: this.trim(destiny[0]), country: this.trim(destiny[1])}});
         console.log(this.state);
+    }
+
+    getCityInfo(info) {
+        this.setState({city_info: info});
+    }
+
+    getFromDate(date) {
+        this.setState({from: date});
+    }
+
+    getUntilDate(date) {
+        this.setState({until: date});
+    }
+
+    getPersons(event) {
+        this.setState({persons: event.target.value});
     }
 
     render() {
@@ -71,7 +103,7 @@ class Home extends React.Component {
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <div className={classes.root}>
-                    <Grid container direction={'row'} className={'backgroud-container container-fluid'}
+                    <Grid container direction={'row'} className={'background-container container-fluid'}
                           align="center"
                           justify="center">
                         <Grid item direction={'column'}>
@@ -81,44 +113,35 @@ class Home extends React.Component {
                             <div className={classes.white_row}>
                                 <Grid container direction={'row'}>
                                     <Grid item direction={'column'} xs={12} className={classes.formControlWrapper}>
-                                        <FormControl className={classes.formControl} align={'left'}
-                                                     justify={'left'}
-                                                     variant="outlined">
-                                            <InputLabel htmlFor="donde-vas-input">
-                                                ¿A donde vas?
-                                            </InputLabel>
-                                            <OutlinedInput
-                                                id="donde-vas-input"
-                                                labelWidth={105}
-                                                onChange={this.dondeVasInputOnChange}
-                                            />
-                                        </FormControl>
-
-
+                                        <GoogleMaps updateParentState={this.getCityInfo}/>
                                     </Grid>
                                 </Grid>
                                 <Grid container direction={'row'} spacing={1}>
                                     <Grid item direction={'column'} xs={12} md={4}
                                           className={classes.formControlWrapper}>
-                                        <KeyboardDatePicker
+                                        <DatePicker
+                                            onChange={this.getFromDate}
                                             className={classes.formControl}
                                             align={'left'} justify={'left'}
                                             disableToolbar
                                             inputVariant="outlined"
-                                            format="MM/dd/yyyy"
+                                            format="dd/MM/yyyy"
                                             margin="normal"
+                                            value={this.state.from}
                                             id="date-picker-inline"
                                             label="¿Cuando llegas?"
                                         />
                                     </Grid>
                                     <Grid item direction={'column'} xs={12} md={4}
                                           className={classes.formControlWrapper}>
-                                        <KeyboardDatePicker
+                                        <DatePicker
+                                            onChange={this.getUntilDate}
                                             className={classes.formControl}
                                             align={'left'} justify={'left'}
                                             disableToolbar
                                             inputVariant="outlined"
-                                            format="MM/dd/yyyy"
+                                            format="dd/MM/yyyy"
+                                            value={this.state.until}
                                             margin="normal"
                                             id="date-picker-inline"
                                             label="¿Cuando te vas?"
@@ -132,6 +155,7 @@ class Home extends React.Component {
                                                 Personas
                                             </InputLabel>
                                             <OutlinedInput
+                                                onChange={this.getPersons}
                                                 type={'number'}
                                                 id="component-outlined"
                                                 labelWidth={70}
@@ -142,7 +166,7 @@ class Home extends React.Component {
                                           className={classes.formControlWrapper}>
                                         <Button variant="contained"
                                                 className={`${classes.formControl} ${classes.formControlButton}`}
-                                                color="primary">
+                                                color="primary" onClick={this.handleClick}>
                                             Buscar
                                         </Button>
                                     </Grid>

@@ -59,7 +59,7 @@ a {
     width: 50px;
 }
 
-.backgroud-container {
+.background-container {
     background: linear-gradient(rgba(201, 203, 255, 0.9), rgba(143, 199, 255, 0.9)), url(https://www.ahstatic.com/photos/9399_ho_00_p_1024x768.jpg);
     height: 100%;
     background-size: cover;
