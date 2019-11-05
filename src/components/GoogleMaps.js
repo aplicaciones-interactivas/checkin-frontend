@@ -34,7 +34,7 @@ export default function GoogleMaps(props) {
     const [inputValue, setInputValue] = React.useState("");
     const [options, setOptions] = React.useState([]);
     const loaded = React.useRef(false);
-    const apikey = "AIzaSyCr93elOowQMq5CQulQLhXLhsJhMR6BIRY";
+    const apikey = "";
 
     if (typeof window !== "undefined" && !loaded.current) {
         if (!document.querySelector("#google-maps")) {
