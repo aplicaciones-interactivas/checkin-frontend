@@ -6,6 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import {Cookies, withCookies} from "react-cookie";
+import Redirect from "react-router-dom/es/Redirect";
 
 const styles = theme => ({
     root: {
@@ -26,6 +27,8 @@ class NavBar extends React.Component {
         this.state = {
             token: cookies.token,
         }
+        this.handleSingOut = this.handleSingOut.bind(this);
+
     }
 
     componentDidMount() {
@@ -46,6 +49,12 @@ class NavBar extends React.Component {
         }
     }
 
+    handleSingOut(event) {
+        event.preventDefault();
+        this.setState({token: null, user: null});
+        document.getElementById('sign-out-button').click();
+    }
+
     navbarOptions() {
         if (!this.state.user) {
             return (
@@ -57,9 +66,12 @@ class NavBar extends React.Component {
         } else if (this.state.user.roles && this.state.user.roles.includes('USER')) {
             return (
                 <div>
-                    <Button color="inherit" href={'/reservas'}>Mis Reservas</Button>
-                    <Button color="inherit" href={'/'}>Cerrar sesion</Button>
+                    <Button color="inherit" href={'/Reservations'}>Mis Reservas</Button>
+                    <Button id='sign-out-button' onClick={this.handleSingOut} color="inherit" href={'/'}>Cerrar
+                        sesion</Button>
                 </div>);
+        } else if (this.state.user.roles && (this.state.user.roles.includes('ADMIN') || this.state.user.roles.includes('SUPERUSER'))) {
+            return <Redirect to='/Administration'/>
         }
     }
 
