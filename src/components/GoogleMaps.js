@@ -34,7 +34,7 @@ export default function GoogleMaps(props) {
     const [inputValue, setInputValue] = React.useState("");
     const [options, setOptions] = React.useState([]);
     const loaded = React.useRef(false);
-    const apikey = "API_KEY"
+    const apikey = "AIzaSyCr93elOowQMq5CQulQLhXLhsJhMR6BIRY";
 
     if (typeof window !== "undefined" && !loaded.current) {
         if (!document.querySelector("#google-maps")) {
@@ -86,6 +86,14 @@ export default function GoogleMaps(props) {
         };
     }, [inputValue, customFetch]);
 
+    const preventEnterKey = (ev) => {
+        console.log(`Pressed keyCode ${ev.key}`);
+        if (ev.keyCode === 13) {
+            // Do code here
+            ev.preventDefault();
+        }
+    }
+
     return (
         <Autocomplete
             getOptionLabel={option => {
@@ -105,6 +113,7 @@ export default function GoogleMaps(props) {
             includeInputInList
             freeSolo
             disableOpenOnFocus
+            onKeyDown={preventEnterKey}
             renderInput={params => (
                 <TextField
                     align={'left'} justify={'left'}
@@ -112,6 +121,7 @@ export default function GoogleMaps(props) {
                     label="¿A donde vas?"
                     variant="outlined"
                     fullWidth
+
                     onChange={handleChange}
                 />
             )}

@@ -52,34 +52,16 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {from: null, until: null};
-        this.dondeVasInputOnChange = this.dondeVasInputOnChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.getCityInfo = this.getCityInfo.bind(this);
-        this.handleClick = this.handleClick.bind(this);
         this.getFromDate = this.getFromDate.bind(this);
         this.getUntilDate = this.getUntilDate.bind(this);
         this.getPersons = this.getPersons.bind(this);
-    }
-
-    trim(string) {
-        if (string) {
-            return string.trim();
-        }
+        this.getQueryUrl = this.getQueryUrl.bind(this);
     }
 
     handleChange(address) {
         this.setState({address});
-    }
-
-    handleClick(event) {
-        console.log(this.state);
-    }
-
-
-    async dondeVasInputOnChange(event) {
-        let destiny = event.target.value.split(',');
-        await this.setState({destination: {city: this.trim(destiny[0]), country: this.trim(destiny[1])}});
-        console.log(this.state);
     }
 
     getCityInfo(info) {
@@ -87,15 +69,33 @@ class Home extends React.Component {
     }
 
     getFromDate(date) {
-        this.setState({from: date});
+        this.setState({from: date.toISOString()});
     }
 
     getUntilDate(date) {
-        this.setState({until: date});
+        this.setState({until: date.toISOString()});
     }
 
     getPersons(event) {
         this.setState({persons: event.target.value});
+    }
+
+    getQueryUrl() {
+        let country = ''
+        let city = '';
+        let from = '';
+        let until = '';
+        if (this.state.city_info) {
+            country = this.state.city_info.address_components.filter(component => component.types.includes('country'))[0].short_name;
+            city = this.state.city_info.address_components.filter(component => component.types.includes('locality'))[0].long_name;
+        }
+        let persons = this.state.persons;
+        if (this.state.from)
+            from = this.state.from.slice(0, 10);
+        if (this.state.until)
+            until = this.state.until.slice(0, 10);
+
+        return 'country=' + country + '&city=' + city + '&from=' + from + '&until=' + until + '&occupancy=' + persons;
     }
 
     render() {
@@ -123,13 +123,13 @@ class Home extends React.Component {
                                             onChange={this.getFromDate}
                                             className={classes.formControl}
                                             align={'left'} justify={'left'}
-                                            disableToolbar
                                             inputVariant="outlined"
                                             format="dd/MM/yyyy"
                                             margin="normal"
                                             value={this.state.from}
                                             id="date-picker-inline"
                                             label="¿Cuando llegas?"
+                                            variant={'inline'}
                                         />
                                     </Grid>
                                     <Grid item direction={'column'} xs={12} md={4}
@@ -138,13 +138,13 @@ class Home extends React.Component {
                                             onChange={this.getUntilDate}
                                             className={classes.formControl}
                                             align={'left'} justify={'left'}
-                                            disableToolbar
                                             inputVariant="outlined"
                                             format="dd/MM/yyyy"
                                             value={this.state.until}
                                             margin="normal"
                                             id="date-picker-inline"
                                             label="¿Cuando te vas?"
+                                            variant={'inline'}
                                         />
                                     </Grid>
                                     <Grid item direction={'column'} xs={12} md={2}
@@ -152,19 +152,20 @@ class Home extends React.Component {
                                         <FormControl className={classes.formControl} align={'left'} justify={'left'}
                                                      variant="outlined">
                                             <InputLabel htmlFor="component-outlined">
-                                                Personas
+                                                Personas *
                                             </InputLabel>
                                             <OutlinedInput
                                                 onChange={this.getPersons}
                                                 type={'number'}
                                                 id="component-outlined"
-                                                labelWidth={70}
+                                                labelWidth={80}
                                             />
                                         </FormControl>
                                     </Grid>
                                     <Grid item direction={'column'} xs={12} md={2}
                                           className={classes.formControlWrapper}>
                                         <Button variant="contained"
+                                                href={`/infoHotel?${this.getQueryUrl()}`}
                                                 className={`${classes.formControl} ${classes.formControlButton}`}
                                                 color="primary" onClick={this.handleClick}>
                                             Buscar

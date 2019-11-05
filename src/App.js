@@ -5,6 +5,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import Route from 'react-router-dom/Route';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import HotelInfo from './components/hotelInfo';
 import NavBar from "./components/NavBar";
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
         <Router>
             <div class="principal">
                 <NavBar/>
-                <Route path="/InfoHotel"/>
+                <Route path="/infoHotel" exact strict component={[]}/>
                 <Route path="/" exact strict component={HomePage}/>
                 <Route path="/SignIn" exact strict component={SigningIn}/>
                 <Route path="/SignUp" exact strict component={SigningUp}/>
