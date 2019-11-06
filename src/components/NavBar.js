@@ -6,7 +6,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import {Cookies, withCookies} from "react-cookie";
-import Redirect from "react-router-dom/es/Redirect";
 
 const styles = theme => ({
     root: {
@@ -24,8 +23,10 @@ class NavBar extends React.Component {
     constructor(props) {
         super(props);
         const {cookies} = props.cookies;
+        const location = window.location.pathname
         this.state = {
             token: cookies.token,
+            location: location,
         }
         this.handleSingOut = this.handleSingOut.bind(this);
 
@@ -52,6 +53,7 @@ class NavBar extends React.Component {
     handleSingOut(event) {
         event.preventDefault();
         this.setState({token: null, user: null});
+        this.props.cookies.remove('token');
         document.getElementById('sign-out-button').click();
     }
 
@@ -71,7 +73,15 @@ class NavBar extends React.Component {
                         sesion</Button>
                 </div>);
         } else if (this.state.user.roles && (this.state.user.roles.includes('ADMIN') || this.state.user.roles.includes('SUPERUSER'))) {
-            return <Redirect to='/Administration'/>
+            if (this.state.location === '/') {
+                window.location.pathname = '/Administration';
+            } else {
+                return (
+                    <div>
+                        <Button id='sign-out-button' onClick={this.handleSingOut} color="inherit" href={'/'}>Cerrar
+                            sesion</Button>
+                    </div>);
+            }
         }
     }
 
@@ -81,7 +91,9 @@ class NavBar extends React.Component {
             <div>{classes.title.flexGrow}</div>
             <Toolbar>
                 <Typography variant="h6" className={classes.title}>
+                    <span onClick={() => window.location.pathname = '/'}>
                     Check-In
+                    </span>
                 </Typography>
                 {this.navbarOptions()}
             </Toolbar>
