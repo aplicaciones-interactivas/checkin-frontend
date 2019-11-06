@@ -17,6 +17,11 @@ const styles = theme => ({
     menuButton: {
         marginRight: theme.spacing(2),
     },
+    customMouseIcon: {
+        "&:hover":{
+            cursor: 'pointer'
+        }
+    }
 });
 
 class NavBar extends React.Component {
@@ -91,7 +96,7 @@ class NavBar extends React.Component {
             <div>{classes.title.flexGrow}</div>
             <Toolbar>
                 <Typography variant="h6" className={classes.title}>
-                    <span onClick={() => window.location.pathname = '/'}>
+                    <span className={classes.customMouseIcon} onClick={() => window.location.pathname = '/'}>
                     Check-In
                     </span>
                 </Typography>

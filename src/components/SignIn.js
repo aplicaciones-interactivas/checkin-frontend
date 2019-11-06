@@ -1,10 +1,7 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -15,14 +12,8 @@ import PropTypes, {instanceOf} from "prop-types";
 import cookie from 'react-cookies'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ErrorBox from "./ErrorBox";
-import {useCookies} from 'react-cookie';
 
 const useStyles = theme => ({
-    '@global': {
-        body: {
-            backgroundColor: theme.palette.common.white,
-        },
-    },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -33,12 +24,8 @@ const useStyles = theme => ({
         margin: theme.spacing(1),
         backgroundColor: "#3f51b5",
     },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: theme.spacing(2, 0, 2),
     },
     error: {
         backgroundColor: theme.palette.error.light,
@@ -61,14 +48,10 @@ class SignIn extends React.Component {
 
     handleOnSubmit(event) {
         event.preventDefault();
-        console.log("a")
-
-        console.log("b")
         const request = {
             username: this.state.username,
             password: this.state.password
         }
-        console.log("c")
         fetch('http://localhost:3200/auth/login', {
             method: 'POST',
             mode: 'cors',
@@ -85,7 +68,6 @@ class SignIn extends React.Component {
                 window.location.pathname = '/';
             })
             .catch(err => this.setState({error: 'Revisa tu usuario y contraseña'}));
-
     }
 
     render() {
@@ -128,7 +110,7 @@ class SignIn extends React.Component {
                     >
                         Entrar
                     </Button>
-                    <Grid container>
+                    <Grid container justify="center">
                         <Grid item>
                             <Link href="/SignUp" variant="body2">
                                 {"¿No tenes cuenta? Registrate"}
