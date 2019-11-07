@@ -27,7 +27,7 @@ function App() {
         <Router>
             <div class="principal">
                 <NavBar/>
-                <Route path="/infoHotel" exact strict component={[]}/>
+                <Route path="/Hotels" exact strict component={[]}/>
                 <Route path="/" exact strict component={HomePage}/>
                 <Route path="/SignIn" exact strict component={SigningIn}/>
                 <Route path="/SignUp" exact strict component={SigningUp}/>
