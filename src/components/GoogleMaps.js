@@ -39,7 +39,7 @@ export default function GoogleMaps(props) {
     const loaded = React.useRef(false);
     let [firstRender, setFirstRender] = React.useState(true);
     let {isHome} = props;
-    const apikey = "AIzaSyCr93elOowQMq5CQulQLhXLhsJhMR6BIRY";
+    const apikey = "";
 
     if (typeof window !== "undefined" && !loaded.current) {
         if (!document.querySelector("#google-maps")) {
