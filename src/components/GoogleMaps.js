@@ -43,24 +43,9 @@ export default function GoogleMaps(props) {
     const [options, setOptions] = React.useState([]);
     let {isHome} = props;
     const [selected, setSelected] = React.useState(isHome ? null : parseSearch(window.location.search).placeId);
-    const loaded = React.useRef(false);
-    const apikey = "AIzaSyCr93elOowQMq5CQulQLhXLhsJhMR6BIRY";
-
-    if (typeof window !== "undefined" && !loaded.current) {
-        if (!document.querySelector("#google-maps")) {
-            loadScript(
-                "https://maps.googleapis.com/maps/api/js?key=" + apikey + "&libraries=places",
-                document.querySelector("head"),
-                "google-maps"
-            );
-        }
-
-        loaded.current = true;
-    }
 
     const handleChange = event => {
         setInputValue(event.target.value);
-
     };
 
     const memo = React.useMemo(
@@ -86,13 +71,6 @@ export default function GoogleMaps(props) {
 
     React.useEffect(() => {
         let active = true;
-
-        if (!autocompleteService.current && window.google) {
-            autocompleteService.current = new window.google.maps.places.AutocompleteService();
-        }
-        if (!autocompleteService.current) {
-            return undefined;
-        }
 
         if (inputValue === "") {
             setOptions([]);
