@@ -110,8 +110,12 @@ class Buscador extends React.Component {
             from = this.state.from.slice(0, 10);
         if (this.state.until)
             until = this.state.until.slice(0, 10);
+        let query = 'country=' + country + '&city=' + city + '&from=' + from + '&until=' + until + '&occupancy=' + persons;
 
-        return 'country=' + country + '&city=' + city + '&from=' + from + '&until=' + until + '&occupancy=' + persons;
+        if (this.state.city_info && this.state.city_info.place_id) {
+            query += '&placeId=' + this.state.city_info.place_id;
+        }
+        return query;
     }
 
     render() {

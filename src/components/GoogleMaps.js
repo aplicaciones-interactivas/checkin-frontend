@@ -8,6 +8,7 @@ import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 import TextField from "@material-ui/core/TextField";
 import {parse as parseSearch} from 'query-string';
+import CheckInPlacesApi from "../api/CheckinPlacesApi";
 
 function loadScript(src, position, id) {
     if (!position) {
@@ -27,19 +28,23 @@ const useStyles = makeStyles(theme => ({
     icon: {
         color: theme.palette.text.secondary,
         marginRight: theme.spacing(2)
+    },
+    whiteBackground: {
+        backgroundColor: 'white'
     }
 }));
 
 export default function GoogleMaps(props) {
+
+    const checkInPlacesApi = new CheckInPlacesApi();
+
     const classes = useStyles();
     const [inputValue, setInputValue] = React.useState("");
     const [options, setOptions] = React.useState([]);
-    const [selected, setSelected] = React.useState(parseSearch(window.location.search).placeId);
-    const [cityInfo, setCityInfo] = React.useState(null);
-    const loaded = React.useRef(false);
-    let [firstRender, setFirstRender] = React.useState(true);
     let {isHome} = props;
-    const apikey = "";
+    const [selected, setSelected] = React.useState(isHome ? null : parseSearch(window.location.search).placeId);
+    const loaded = React.useRef(false);
+    const apikey = "AIzaSyCr93elOowQMq5CQulQLhXLhsJhMR6BIRY";
 
     if (typeof window !== "undefined" && !loaded.current) {
         if (!document.querySelector("#google-maps")) {
@@ -58,31 +63,23 @@ export default function GoogleMaps(props) {
 
     };
 
-    const customFetch = React.useMemo(
+    const memo = React.useMemo(
         () =>
             throttle((input, callback) => {
-                autocompleteService.current.getPlacePredictions(input, callback);
+                checkInPlacesApi.autocomplete(input)
+                    .then(callback)
             }, 200),
         []
     );
 
     React.useEffect(() => {
         if (selected) {
-            if (!cityInfo || selected !== cityInfo.formatted_address) {
-                fetch('http://localhost:3200/places/details/' + selected,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    }).then(res => res.json())
-                    .then(async data => {
-                        props.updateParentState(data);
-                        if (!isHome && firstRender) {
-                            await setInputValue(data.formatted_address);
-                        }
-                    });
-            }
+            checkInPlacesApi.getPlaceDetails(selected)
+                .then(async data => {
+                    props.updateParentState(data);
+                    await setInputValue(data.formatted_address);
+                });
+
         }
     }, [selected]);
 
@@ -102,7 +99,7 @@ export default function GoogleMaps(props) {
             return undefined;
         }
 
-        customFetch({input: inputValue}, results => {
+        memo(inputValue, results => {
             if (active) {
                 setOptions(results || []);
             }
@@ -111,11 +108,10 @@ export default function GoogleMaps(props) {
         return () => {
             active = false;
         };
-    }, [inputValue, customFetch]);
+    }, [inputValue, memo]);
 
     const preventEnterKey = (ev) => {
         if (ev.keyCode === 13) {
-            // Do code here
             ev.preventDefault();
         }
     }
@@ -127,9 +123,7 @@ export default function GoogleMaps(props) {
                 return option.description;
             }}
             filterOptions={x => x}
-            value={(() => {
-                return {description: inputValue}
-            })()}
+            value={{description: inputValue}}
             options={options}
             autoComplete
             includeInputInList
@@ -143,6 +137,7 @@ export default function GoogleMaps(props) {
                     label="¿A donde vas?"
                     variant="outlined"
                     fullWidth
+                    className={classes.whiteBackground}
                     onChange={handleChange}
                 />
             )}
