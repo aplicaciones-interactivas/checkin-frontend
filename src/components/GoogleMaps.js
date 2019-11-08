@@ -7,6 +7,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 import TextField from "@material-ui/core/TextField";
+import {parse as parseSearch} from 'query-string';
 
 function loadScript(src, position, id) {
     if (!position) {
@@ -33,8 +34,12 @@ export default function GoogleMaps(props) {
     const classes = useStyles();
     const [inputValue, setInputValue] = React.useState("");
     const [options, setOptions] = React.useState([]);
+    const [selected, setSelected] = React.useState(parseSearch(window.location.search).placeId);
+    const [cityInfo, setCityInfo] = React.useState(null);
     const loaded = React.useRef(false);
-    const apikey = "";
+    let [firstRender, setFirstRender] = React.useState(true);
+    let {isHome} = props;
+    const apikey = "AIzaSyCr93elOowQMq5CQulQLhXLhsJhMR6BIRY";
 
     if (typeof window !== "undefined" && !loaded.current) {
         if (!document.querySelector("#google-maps")) {
@@ -50,6 +55,7 @@ export default function GoogleMaps(props) {
 
     const handleChange = event => {
         setInputValue(event.target.value);
+
     };
 
     const customFetch = React.useMemo(
@@ -59,6 +65,27 @@ export default function GoogleMaps(props) {
             }, 200),
         []
     );
+
+    React.useEffect(() => {
+        if (selected) {
+            if (!cityInfo || selected !== cityInfo.formatted_address) {
+                fetch('http://localhost:3200/places/details/' + selected,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    }).then(res => res.json())
+                    .then(async data => {
+                        props.updateParentState(data);
+                        if (!isHome && firstRender) {
+                            await setInputValue(data.formatted_address);
+                        }
+                    });
+            }
+        }
+    }, [selected]);
+
 
     React.useEffect(() => {
         let active = true;
@@ -87,7 +114,6 @@ export default function GoogleMaps(props) {
     }, [inputValue, customFetch]);
 
     const preventEnterKey = (ev) => {
-        console.log(`Pressed keyCode ${ev.key}`);
         if (ev.keyCode === 13) {
             // Do code here
             ev.preventDefault();
@@ -97,17 +123,13 @@ export default function GoogleMaps(props) {
     return (
         <Autocomplete
             getOptionLabel={option => {
-                fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?key=' + apikey + '&place_id=' + option.place_id,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    }).then(res => res.json())
-                    .then(data => props.updateParentState(data.result));
+                setSelected(option.place_id);
                 return option.description;
             }}
             filterOptions={x => x}
+            value={(() => {
+                return {description: inputValue}
+            })()}
             options={options}
             autoComplete
             includeInputInList
@@ -121,7 +143,6 @@ export default function GoogleMaps(props) {
                     label="¿A donde vas?"
                     variant="outlined"
                     fullWidth
-
                     onChange={handleChange}
                 />
             )}
