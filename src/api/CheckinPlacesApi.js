@@ -1,7 +1,9 @@
+import constants from "./ApiConstants";
+
 export default class CheckInPlacesApi {
 
     getPlaceDetails(id) {
-        return fetch('http://localhost:3200/places/details/' + id,
+        return fetch(constants.SERVER_HOST + '/places/details/' + id,
             {
                 method: 'GET',
                 headers: {
@@ -11,7 +13,7 @@ export default class CheckInPlacesApi {
     }
 
     autocomplete(searchTerm) {
-        return fetch('http://localhost:3200/places/autocomplete?searchTerm=' + searchTerm)
+        return fetch(constants.SERVER_HOST + '/places/autocomplete?searchTerm=' + searchTerm)
             .then(res => res.json());
     }
 

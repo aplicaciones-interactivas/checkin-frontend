@@ -7,6 +7,8 @@ import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
+import {CheckinHotelApi} from "../api/CheckinHotelApi";
+import CheckinAmenitiesApi from "../api/CheckinAmenitiesApi";
 
 const styles = theme => ({
     root: {
@@ -53,23 +55,6 @@ class Hotels extends React.Component {
     }
 
     componentDidMount() {
-        /*
-        export class HotelFilterDto {
-  stars: number[];
-  category: string;
-  country: string;
-  city: string;
-  amenities: number[];
-  mealPlans: number[];
-  name: string;
-  from: string;
-  until: string;
-  occupancy: number;
-  guests: number;
-  page: number;
-}
-         */
-
         fetch('http://localhost:3200/hotel' + window.location.search, {
             mode: "cors"
         }).then(res => res.json())
@@ -83,7 +68,7 @@ class Hotels extends React.Component {
                 <Grid container direction={'row'}
                       align="center"
                       justify="center">
-                    <Grid item direction={'column'} xs={3}>
+                    <Grid item direction={'column'} xs={12} lg={3}>
                         <Buscador isHome={false} initialData={this.state.search}/>
                     </Grid>
                     <Grid item direction={'column'} xs={9}>
