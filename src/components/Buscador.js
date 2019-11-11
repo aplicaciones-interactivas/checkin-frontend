@@ -120,7 +120,6 @@ class Buscador extends React.Component {
         this.getUntilDate = this.getUntilDate.bind(this);
         this.getPersons = this.getPersons.bind(this);
         this.getQueryUrl = this.getQueryUrl.bind(this);
-        this.onclick = this.onclick.bind(this)
         this.onSelectedStar = this.onSelectedStar.bind(this);
         this.onSelectedAmenity = this.onSelectedAmenity.bind(this);
     }
@@ -156,10 +155,10 @@ class Buscador extends React.Component {
             country = this.state.city_info.address_components.filter(component => component.types.includes('country'))[0].short_name;
             city = this.state.city_info.address_components.filter(component => component.types.includes('locality'))[0].long_name;
         }
-        if (this.state.selectedStars.length !== 0) {
+        if (this.state.selectedStars && this.state.selectedStars.length !== 0) {
             stars = this.state.selectedStars.join("stars=");
         }
-        if (this.state.selectedAmenities.length !== 0) {
+        if (this.state.selectedAmenities && this.state.selectedAmenities.length !== 0) {
             amenities = this.state.selectedAmenities.join("amenities=")
         }
         let occupancy = this.state.occupancy;
@@ -195,13 +194,6 @@ class Buscador extends React.Component {
             query.push('placeId=' + this.state.city_info.place_id);
         }
         return query.join('&');
-    }
-
-    onclick(event) {
-        event.preventDefault()
-        console.log(event.currentTarget.href)
-        console.log(this.state)
-        window.location.search = this.getQueryUrl();
     }
 
     onSelectedStar(event) {
@@ -335,7 +327,7 @@ class Buscador extends React.Component {
                         <Button variant="contained"
                                 href={`/Hotels?${this.getQueryUrl()}`}
                                 className={`${classes.formControl} ${classes.formControlButton}`}
-                                color="primary" onClick={this.onclick}>
+                                color="primary">
                             Buscar
                         </Button>
                     </Grid>
