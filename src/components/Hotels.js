@@ -9,6 +9,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import {CheckinHotelApi} from "../api/CheckinHotelApi";
 import CheckinAmenitiesApi from "../api/CheckinAmenitiesApi";
+import HotelBox from "./HotelBox";
 
 const styles = theme => ({
     root: {
@@ -43,6 +44,9 @@ const styles = theme => ({
         padding: '10px 10px 15px 10px',
         margin: '10px 0px 0px 0px',
         maxWidth: '810px'
+    },
+    hotelRow: {
+        marginTop: theme.spacing(1)
     }
 });
 
@@ -68,10 +72,11 @@ class Hotels extends React.Component {
                 <Grid container direction={'row'}
                       align="center"
                       justify="center">
-                    <Grid item direction={'column'} xs={12} lg={3}>
+                    <Grid item direction={'column'} xs={12} md={12} lg={3}>
                         <Buscador isHome={false} initialData={this.state.search}/>
                     </Grid>
-                    <Grid item direction={'column'} xs={9}>
+                    <Grid item direction={'column'} className={classes.hotelRow} xs={12} md={12} lg={9}>
+                        <HotelBox></HotelBox>
                     </Grid>
                 </Grid>
             </div>

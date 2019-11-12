@@ -15,8 +15,13 @@ import Rating from "@material-ui/lab/Rating";
 import Checkbox from "@material-ui/core/Checkbox";
 import Box from "@material-ui/core/Box";
 import CheckinAmenitiesApi from "../api/CheckinAmenitiesApi";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const styles = theme => ({
+
     root: {
         flexGrow: 1,
     },
@@ -50,19 +55,38 @@ const styles = theme => ({
         margin: '10px 0px 0px 0px',
         maxWidth: '810px'
     },
-    light_blue_row: {
+    lightBlueBody: {
         background: '#e2f0ff',
         borderRadius: '5px',
         padding: '10px 10px 15px 10px',
         margin: '10px 0px 0px 0px',
-        maxWidth: '810px',
     },
+    noLeftPadding: {
+        paddingLeft: '10px',
+    },
+    lightBlueRow: {
+        background: '#e2f0ff',
+        boxShadow: 'none'
+    },
+
     input_background: {
         backgroundColor: 'white'
     },
     rating: {
         display: 'flex',
         alignItems: 'center',
+    },
+    sectionTile: {
+        marginTop: theme.spacing(1)
+    },
+    panelDetails:{
+        padding: 0,
+        "& div": {
+            margin: 0
+        }
+    },
+    panelTitle:{
+        margin: 0
     }
 });
 
@@ -71,6 +95,10 @@ class Buscador extends React.Component {
     constructor(props) {
         super(props);
         this.state = {amenities: [], selectedStars: [], selectedAmenities: []};
+        this.state.expansionPanels = {
+            starsPanel: window.innerWidth >= 1280,
+            amenityPanel:  window.innerWidth >= 1280,
+        }
         this.checkinAmenitiesApi = new CheckinAmenitiesApi();
         this.checkinAmenitiesApi.get()
             .then(data => {
@@ -122,6 +150,7 @@ class Buscador extends React.Component {
         this.getQueryUrl = this.getQueryUrl.bind(this);
         this.onSelectedStar = this.onSelectedStar.bind(this);
         this.onSelectedAmenity = this.onSelectedAmenity.bind(this);
+        this.changeExpanded = this.changeExpanded.bind(this);
     }
 
     handleChange(address) {
@@ -225,40 +254,69 @@ class Buscador extends React.Component {
         this.setState({selectedAmenities: preselectedAmenities, statusAmenities: status});
     }
 
+    changeExpanded(id) {
+        const panels = this.state.expansionPanels;
+        panels[id] = !panels[id];
+        this.setState(panels);
+    }
 
     renderConditional(classes, isHome) {
         if (!isHome) {
-            return (<div>
-                <Grid item direction={'column'} xs={12} align={'left'} md={isHome ? 2 : 12}
-                      className={classes.formControlWrapper}>
-                    <Typography>Estrellas</Typography>
-                    {
-                        [5, 4, 3, 2, 1].map(v => {
-                            return (
-                                <div className={classes.rating}>
-                                    <Checkbox value={v} color="primary" checked={this.state.statusStars[v] || false}
-                                              onClick={this.onSelectedStar}/>
-                                    <Box><Rating value={v} size={'large'} readOnly/></Box>
-                                </div>);
-                        })
-                    }
-                </Grid>
-                <Grid item direction={'column'} xs={12} align={'left'} md={isHome ? 2 : 12}
-                      className={classes.formControlWrapper}>
-                    <Typography>Facilidades</Typography>
-                    {
-                        this.state.amenities.map(amenity => {
-                            return (<div className={classes.rating}><Checkbox value={amenity.id}
-                                                                              checked={this.state.statusAmenities[amenity.id] || false}
-                                                                              onChange={this.onSelectedAmenity}
+            return (<Grid item xs={12}>
+                <div>
+                    <ExpansionPanel expanded={this.state.expansionPanels.starsPanel} className={classes.lightBlueRow}
+                                    onChange={() => this.changeExpanded('starsPanel')}>
+                        <ExpansionPanelSummary className={classes.noLeftPadding} aria-controls="panel1d-content"
+                                               id="panel1d-header" expandIcon={<ExpandMoreIcon/>}>
+                            <Typography>Estrellas</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails className={classes.panelDetails}>
+                            <Grid item direction={'column'} xs={12} align={'left'} md={12}
+                                  className={classes.formControlWrapper}>
+                                {
+                                    [5, 4, 3, 2, 1].map(v => {
+                                        return (
+                                            <div className={classes.rating}>
+                                                <Checkbox value={v} color="primary"
+                                                          checked={this.state.statusStars[v] || false}
+                                                          onClick={this.onSelectedStar}/>
+                                                <Box><Rating value={v} size={'large'} readOnly/></Box>
+                                            </div>);
+                                    })
+                                }
+                            </Grid>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                </div>
+                <div>
+                    <ExpansionPanel expanded={this.state.expansionPanels.amenityPanel} className={classes.lightBlueRow}
+                                    onChange={() => this.changeExpanded('amenityPanel')}>
+                        <ExpansionPanelSummary className={classes.noLeftPadding} aria-controls="panel1d-content"
+                                               id="panel1d-header" expandIcon={<ExpandMoreIcon/>}>
+                            <Typography>Comodidades</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails className={classes.panelDetails}>
+                            <Grid item direction={'column'} align={'left'} xs={12} md={12}
+                                  className={classes.formControlWrapper}>
+                                {
+                                    this.state.amenities.map(amenity => {
+                                        return (<Grid item className={classes.rating} xs={12} lg={12}><Checkbox
+                                            value={amenity.id}
+                                            checked={this.state.statusAmenities[amenity.id] || false}
+                                            onChange={this.onSelectedAmenity}
 
-                                                                              color="primary"/>
-                                <Typography>{amenity.description}</Typography>
-                            </div>)
-                        })
-                    }
-                </Grid>
-            </div>)
+                                            color="primary"/>
+
+                                            <Typography>{amenity.description}</Typography>
+                                        </Grid>)
+                                    })
+                                }
+                            </Grid>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                </div>
+
+            </Grid>)
         }
     }
 
@@ -266,7 +324,8 @@ class Buscador extends React.Component {
     render() {
         const {classes, isHome} = this.props;
         return (
-            <div className={isHome ? classes.white_row : classes.light_blue_row}>
+            <div
+                className={`${isHome ? classes.white_row : classes.lightBlueBody} ${isHome ? null : classes.maxWidth}`}>
                 <Grid container direction={'row'}>
                     <Grid item direction={'column'} xs={12} className={classes.formControlWrapper}>
                         <GoogleMaps updateParentState={this.getCityInfo} isHome={isHome}/>
