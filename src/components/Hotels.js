@@ -11,30 +11,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import SnackbarContentWrapper from "./SnackbarContentWrapper";
 import HotelImage from "./HotelImage";
 import CardMedia from "@material-ui/core/CardMedia";
+import Link from "@material-ui/core/Link";
+import Typography from "@material-ui/core/Typography";
+import HotelsList from "./HotelsList";
 
 
-const styles = theme => ({
-    hotelRow: {
-        margin: theme.spacing(1),
-    },
-    card: {
-        [theme.breakpoints.down('sm')]: {
-            height: '350px',
-        },
-        [theme.breakpoints.up('lg')]: {
-            height: '240px'
-        }
-    },
-    spinner: {
-        marginTop: theme.spacing(5)
-    },
-    snackBar: {
-        marginTop: theme.spacing(2),
-        marginLeft: theme.spacing(1),
-        paddingRight: theme.spacing(1),
-        width: '100%'
-    }
-});
+const styles = theme => ({});
 
 
 class Hotels extends React.Component {
@@ -51,35 +33,10 @@ class Hotels extends React.Component {
     }
 
     renderHotelBoxes(hotels) {
-        const {classes} = this.props;
-        console.log(hotels);
-        if (hotels) {
-            if (hotels.length === 0) {
-                return (<SnackbarContentWrapper message={"No encontramos ningun hotel disponible"}
-                                                variant={'warning'}></SnackbarContentWrapper>);
-            } else {
-                return hotels.map(hotel => {
-                    return (
-                        <Grid className={classes.hotelRow} item xs={12}>
-                            <Card
-                                className={classes.card}>
-                                <CardContent>
-                                    <Grid item xs={12} lg={3}>
-                                        <HotelImage isGrid={true} images={hotel.__hotelImages__}/>
-                                    </Grid>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    )
-                });
-            }
-        } else {
-            return <Grid align={'center'} className={classes.spinner} item xs={12}><CircularProgress/></Grid>;
-        }
+        return
     }
 
     render() {
-        const {classes} = this.props;
         return (<MuiPickersUtilsProvider utils={DateFnsUtils}>
             <div>
                 <Grid container>
@@ -88,9 +45,7 @@ class Hotels extends React.Component {
                     </Grid>
                     <Grid container xs={12} lg={9}>
                         <Grid item xs={12}>
-                            {
-                                this.renderHotelBoxes(this.state.hotels)
-                            }
+                            <HotelsList hotels={this.state.hotels} search={this.state.search}/>
                         </Grid>
                     </Grid>
                 </Grid>

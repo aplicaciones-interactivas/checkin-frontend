@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Link, Typography} from "@material-ui/core";
+import {Box, Card, Link, Typography} from "@material-ui/core";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {red} from "@material-ui/core/colors";
@@ -14,12 +14,11 @@ import th from "moment/locale/th";
 
 const styles = theme => ({
     card: {
-        maxWidth: '100%',
+        [theme.breakpoints.down('sm')]: {
+            height: '350px',
+        },
         [theme.breakpoints.up('lg')]: {
-            marginLeft: theme.spacing(2),
-            marginRight: theme.spacing(1),
-            marginBottom: theme.spacing(0),
-            marginTop: theme.spacing(0),
+            height: '240px'
         }
     },
     expand: {
@@ -32,13 +31,13 @@ const styles = theme => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
-    avatar: {
-        backgroundColor: red[500],
-    },
     anchorNotUnderlined: {
         "&:hover": {
             cursor: 'pointer'
-        }
+        },
+    },
+    linkContainer: {
+        paddingLeft: '20px',
     },
     masInfoButton: {
         marginTop: theme.spacing(1),
@@ -50,7 +49,6 @@ const styles = theme => ({
         },
         verticalAlign: 'top'
     },
-
     hotelGrid: {
         [theme.breakpoints.down('sm')]: {
             textAlign: 'center',
@@ -58,8 +56,73 @@ const styles = theme => ({
         [theme.breakpoints.up('md')]: {
             textAlign: 'left',
         },
+    },
+    paddingTypography: {
+        paddingLeft: '5px'
+    },
+    containerBorderButton: {
+        [theme.breakpoints.up('lg')]: {
+            borderLeft: '1px dotted grey',
+            paddingLeft: theme.spacing(1)
+        }
     }
 });
+
+
+class HotelBox extends React.Component {
+
+    render() {
+        const {classes, hotel, search} = this.props;
+        return (
+            <Card
+                className={classes.card}>
+                <CardContent>
+                    <Grid container>
+                        <Grid item align={'center'} xs={12} lg={3}>
+                            <Grid item xs={3} lg={12}>
+                                <HotelImage isGrid={true} images={hotel.__hotelImages__}/>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} lg={7} className={classes.linkContainer}>
+                            <Link underline={'none'} className={classes.anchorNotUnderlined} children={
+                                <Typography className={classes.paddingTypography}>{hotel.name}</Typography>
+                            }/>
+                            <Grid xs={12} lg={7}>
+                                <Rating value={hotel.stars} size={'large'} readOnly/>
+                            </Grid>
+                            <Grid xs={12} lg={7}>
+                                <AmenityList amenities={hotel.amenities}/>
+                            </Grid>
+                        </Grid>
+                        <Grid className={classes.containerBorderButton} container xs={12} lg={2} align="center"
+                              justify="center" alignItems={'center'} direction="row">
+                            <Grid item xs={12}>
+                                <Grid item xs={12}>Reserva ya por</Grid>
+                                <Grid item xs={12}>
+                                    <Price hotelId={hotel.id} from={search.from} until={search.until}
+                                           occupancy={search.occupancy}/>
+                                </Grid>
+                                <Button className={classes.masInfoButton} variant="contained" color="primary">
+                                    Mas Info
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                </CardContent>
+
+            </Card>
+        );
+    }
+
+}
+
+
+HotelBox.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(HotelBox);
 
 /*
  <CardContent>
@@ -90,22 +153,3 @@ const styles = theme => ({
                     </Button>
                 </Grid>
                  */
-
-class HotelBox extends React.Component {
-
-    render() {
-        const {classes, hotel, search} = this.props;
-        return (
-            <Card className={classes.card}>
-                ddfsdfsdfsdf
-            </Card>
-        );
-    }
-}
-
-
-HotelBox.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(HotelBox);
