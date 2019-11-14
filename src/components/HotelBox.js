@@ -15,7 +15,7 @@ import th from "moment/locale/th";
 const styles = theme => ({
     card: {
         [theme.breakpoints.down('sm')]: {
-            height: '350px',
+            height: '410px',
         },
         [theme.breakpoints.up('lg')]: {
             height: '240px'
@@ -37,7 +37,12 @@ const styles = theme => ({
         },
     },
     linkContainer: {
-        paddingLeft: '20px',
+        [theme.breakpoints.up('lg')]: {
+            paddingLeft: '20px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            textAlign: 'center'
+        },
     },
     masInfoButton: {
         marginTop: theme.spacing(1),
@@ -53,12 +58,15 @@ const styles = theme => ({
         [theme.breakpoints.down('sm')]: {
             textAlign: 'center',
         },
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up('lg')]: {
             textAlign: 'left',
         },
     },
     paddingTypography: {
-        paddingLeft: '5px'
+        [theme.breakpoints.up('lg')]: {
+            paddingLeft: '5px'
+        },
+
     },
     containerBorderButton: {
         [theme.breakpoints.up('lg')]: {
@@ -70,6 +78,11 @@ const styles = theme => ({
 
 
 class HotelBox extends React.Component {
+
+    formatSearch(search) {
+        return `?from=${search.from}&until=${search.until}&occupancy=${search.occupancy}`;
+    }
+
 
     render() {
         const {classes, hotel, search} = this.props;
@@ -84,7 +97,7 @@ class HotelBox extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid item xs={12} lg={7} className={classes.linkContainer}>
-                            <Link underline={'none'} className={classes.anchorNotUnderlined} children={
+                            <Link href={`/HotelDetails/${hotel.id}${this.formatSearch(search)}`} underline={'none'} className={classes.anchorNotUnderlined} children={
                                 <Typography className={classes.paddingTypography}>{hotel.name}</Typography>
                             }/>
                             <Grid xs={12} lg={7}>
@@ -102,13 +115,14 @@ class HotelBox extends React.Component {
                                     <Price hotelId={hotel.id} from={search.from} until={search.until}
                                            occupancy={search.occupancy}/>
                                 </Grid>
-                                <Button className={classes.masInfoButton} variant="contained" color="primary">
+                                <Button className={classes.masInfoButton}
+                                        href={`/HotelDetails/${hotel.id}${this.formatSearch(search)}`}
+                                        variant="contained" color="primary">
                                     Mas Info
                                 </Button>
                             </Grid>
                         </Grid>
                     </Grid>
-
                 </CardContent>
 
             </Card>
