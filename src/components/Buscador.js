@@ -180,7 +180,7 @@ class Buscador extends React.Component {
         let until = null;
         let stars = "";
         let amenities = "";
-        if (this.state.city_info) {
+        if (this.state.city_info && this.state.city_info.address_components) {
             country = this.state.city_info.address_components.filter(component => component.types.includes('country'))[0].short_name;
             city = this.state.city_info.address_components.filter(component => component.types.includes('locality'))[0].long_name;
         }
