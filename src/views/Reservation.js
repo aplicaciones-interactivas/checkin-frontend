@@ -18,6 +18,8 @@ import {MealPlanTable} from "../components/MealPlanTable";
 import Button from "@material-ui/core/Button";
 import cookie from 'react-cookies';
 import Redirect from "react-router-dom/es/Redirect";
+import tr from "moment/locale/tr";
+import SnackbarContentWrapper from "../components/SnackbarContentWrapper";
 
 const styles = theme => ({
 
@@ -42,10 +44,16 @@ class Reservation extends React.Component {
 
     onReservation() {
         if (cookie.load('token') === undefined) {
-            console.log('asdasdas')
             this.setState({toLogin: true});
         } else {
-            console.log(cookie.load('token'))
+            this.reservationApi.reserve(cookie.load('token'), this.state.search.from, this.state.search.until, this.state.search.roomTypeId)
+                .then(res => {
+                    if (res.statusCode) {
+                        this.setState({reservationStatus: false});
+                    } else {
+                        this.setState({reservationStatus: true});
+                    }
+                });
         }
     }
 
@@ -71,100 +79,112 @@ class Reservation extends React.Component {
 
     conditionalRender() {
         const {classes} = this.props;
-        if (this.state.toLogin) {
-            return (<Redirect to={`/SignIn?action=${window.location.pathname}&search=${encodeURIComponent(window.location.search)}`}/>)
-        } else if (this.state.hotel && this.state.mealPlans && this.state.roomType && this.state.totalPrice) {
-            return (<Grid container direction={'row'}>
-                <Grid item xs={12} md={2}>
-                    <Box pl={2}>
-                        <HotelImage isGrid={true}
-                                    images={this.state.hotel ? this.state.hotel.__hotelImages__ : []}/>
-                    </Box>
-                </Grid>
-                <Grid item xs={12} md={10}>
-                    <Box pl={2}>
-                        <Grid item xs={12}>
-                            <Typography variant={'h4'}>
-                                {this.state.hotel ? this.state.hotel.name : ''} - {this.state.hotel ? this.state.hotel.city : ''} - {this.state.country}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Rating value={this.state.hotel ? this.state.hotel.stars : null}
-                                    size={'large'} readOnly/>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <AmenityList
-                                amenities={this.state.hotel ? this.state.hotel.amenities : []}/>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <DatePicker
-                                disabled
-                                onChange={this.getFromDate}
-                                align={'left'} justify={'left'}
-                                inputVariant="outlined"
-                                format="dd/MM/yyyy"
-                                margin="normal"
-                                value={this.state.search.from}
-                                id="date-picker-inline"
-                                label="¿Cuando llegas?"
-                                variant={'inline'}
-                            />
-                            <DatePicker
-                                disabled
-                                className={classes.datepicker}
-                                onChange={this.getUntilDate}
-                                align={'left'} justify={'left'}
-                                inputVariant="outlined"
-                                format="dd/MM/yyyy"
-                                value={this.state.search.until}
-                                margin="normal"
-                                id="date-picker-inline"
-                                label="¿Cuando te vas?"
-                                variant={'inline'}
-                            />
-                        </Grid>
-                    </Box>
-                </Grid>
-                <Grid item xs={12}>
-                    <Box pl={2}>
-                        <Typography variant={'h7'}>
-                            Precio por noche
-                        </Typography>
-                        <Price price={this.state.roomType.price} notShowPerNigth={true}></Price>
-                        <Typography variant={'h7'}>
-                            Precio total
-                        </Typography>
-                        <Price price={this.state.totalPrice} notShowPerNigth={true}></Price>
-                    </Box>
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography variant={'h6'}>
-                        <Box pl={2} pt={2}>
-                            Podes agregar
-                        </Box>
-                    </Typography>
-                    <MealPlanTable mealPlans={this.state.mealPlans}></MealPlanTable>
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography variant={'h6'}>
-                        <Box pl={2} pt={2}>
-                            O sino directamente reservarlo asi como lo elegiste
-                        </Box>
-                    </Typography>
-                    <Box pl={2}>
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={this.onReservation}
-                        >
-                            Reservar
-                        </Button>
-                    </Box>
-                </Grid>
-            </Grid>);
+        if (this.state.reservationStatus !== undefined) {
+            if (this.state.reservationStatus) {
+                return (<SnackbarContentWrapper message={"Tu reserva se realizo con exito"}
+                                                variant={'success'}></SnackbarContentWrapper>);
+            } else {
+                return (<SnackbarContentWrapper
+                    message={"No se pudo realizar tu reserva. Volve a intentarlo en unos minutos."}
+                    variant={'warning'}></SnackbarContentWrapper>);
+            }
         } else {
-            return (<SpinnerWithMessage message={'Espera un momento, estamos preparando tu reserva'}/>);
+            if (this.state.toLogin) {
+                return (<Redirect
+                    to={`/SignIn?action=${window.location.pathname}&search=${encodeURIComponent(window.location.search)}`}/>)
+            } else if (this.state.hotel && this.state.mealPlans && this.state.roomType && this.state.totalPrice) {
+                return (<Grid container direction={'row'}>
+                    <Grid item xs={12} md={2}>
+                        <Box pl={2}>
+                            <HotelImage isGrid={true}
+                                        images={this.state.hotel ? this.state.hotel.__hotelImages__ : []}/>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} md={10}>
+                        <Box pl={2}>
+                            <Grid item xs={12}>
+                                <Typography variant={'h4'}>
+                                    {this.state.hotel ? this.state.hotel.name : ''} - {this.state.hotel ? this.state.hotel.city : ''} - {this.state.country}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Rating value={this.state.hotel ? this.state.hotel.stars : null}
+                                        size={'large'} readOnly/>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <AmenityList
+                                    amenities={this.state.hotel ? this.state.hotel.amenities : []}/>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <DatePicker
+                                    disabled
+                                    onChange={this.getFromDate}
+                                    align={'left'} justify={'left'}
+                                    inputVariant="outlined"
+                                    format="dd/MM/yyyy"
+                                    margin="normal"
+                                    value={this.state.search.from}
+                                    id="date-picker-inline"
+                                    label="¿Cuando llegas?"
+                                    variant={'inline'}
+                                />
+                                <DatePicker
+                                    disabled
+                                    className={classes.datepicker}
+                                    onChange={this.getUntilDate}
+                                    align={'left'} justify={'left'}
+                                    inputVariant="outlined"
+                                    format="dd/MM/yyyy"
+                                    value={this.state.search.until}
+                                    margin="normal"
+                                    id="date-picker-inline"
+                                    label="¿Cuando te vas?"
+                                    variant={'inline'}
+                                />
+                            </Grid>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box pl={2}>
+                            <Typography variant={'h7'}>
+                                Precio por noche
+                            </Typography>
+                            <Price price={this.state.roomType.price} notShowPerNigth={true}></Price>
+                            <Typography variant={'h7'}>
+                                Precio total
+                            </Typography>
+                            <Price price={this.state.totalPrice} notShowPerNigth={true}></Price>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant={'h6'}>
+                            <Box pl={2} pt={2}>
+                                Podes agregar
+                            </Box>
+                        </Typography>
+                        <MealPlanTable mealPlans={this.state.mealPlans}></MealPlanTable>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant={'h6'}>
+                            <Box pl={2} pt={2}>
+                                O sino directamente reservarlo asi como lo elegiste
+                            </Box>
+                        </Typography>
+                        <Box pl={2}>
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={this.onReservation}
+                            >
+                                Reservar
+                            </Button>
+                        </Box>
+                    </Grid>
+                </Grid>);
+            } else {
+                return (<SpinnerWithMessage message={'Espera un momento, estamos preparando tu reserva'}/>);
+            }
         }
     }
 

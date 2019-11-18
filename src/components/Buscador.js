@@ -79,13 +79,13 @@ const styles = theme => ({
     sectionTile: {
         marginTop: theme.spacing(1)
     },
-    panelDetails:{
+    panelDetails: {
         padding: 0,
         "& div": {
             margin: 0
         }
     },
-    panelTitle:{
+    panelTitle: {
         margin: 0
     }
 });
@@ -97,7 +97,7 @@ class Buscador extends React.Component {
         this.state = {amenities: [], selectedStars: [], selectedAmenities: []};
         this.state.expansionPanels = {
             starsPanel: window.innerWidth >= 1280,
-            amenityPanel:  window.innerWidth >= 1280,
+            amenityPanel: window.innerWidth >= 1280,
         }
         this.checkinAmenitiesApi = new CheckinAmenitiesApi();
         this.checkinAmenitiesApi.get()
@@ -111,7 +111,7 @@ class Buscador extends React.Component {
             this.state.occupancy = search.occupancy;
             let selectedStars = [];
             if (search.stars) {
-                selectedStars = search.stars.split("stars=");
+                selectedStars = search.stars instanceof Array ? search.stars : [search.stars];
             }
             this.state.selectedStars = selectedStars;
             const statusStars = {};
@@ -122,7 +122,8 @@ class Buscador extends React.Component {
 
             let selectedAmenities = [];
             if (search.amenities) {
-                selectedAmenities = search.amenities.split("amenities=");
+                console.log(search.amenities)
+                selectedAmenities = search.amenities instanceof Array ? search.amenities : [search.amenities];
             }
             this.state.selectedAmenities = selectedAmenities;
             const statusAmenities = {};
@@ -162,11 +163,11 @@ class Buscador extends React.Component {
     }
 
     getFromDate(date) {
-        this.setState({from: date});
+        this.setState({from: moment(date)});
     }
 
     getUntilDate(date) {
-        this.setState({until: date});
+        this.setState({until: moment(date)});
     }
 
     getPersons(event) {
@@ -185,10 +186,10 @@ class Buscador extends React.Component {
             city = this.state.city_info.address_components.filter(component => component.types.includes('locality'))[0].long_name;
         }
         if (this.state.selectedStars && this.state.selectedStars.length !== 0) {
-            stars = this.state.selectedStars.join("stars=");
+            stars = this.state.selectedStars.join("&stars=");
         }
         if (this.state.selectedAmenities && this.state.selectedAmenities.length !== 0) {
-            amenities = this.state.selectedAmenities.join("amenities=")
+            amenities = this.state.selectedAmenities.join("&amenities=")
         }
         let occupancy = this.state.occupancy;
 
