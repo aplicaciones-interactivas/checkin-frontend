@@ -101,8 +101,8 @@ class HotelBox extends React.Component {
                                 <Typography className={classes.paddingTypography}>{hotel.name}</Typography>
                             }/>
                             <Grid xs={12} lg={7}>
-                                <Rating value={hotel.stars} size={'large'} readOnly/>
-                            </Grid>
+                                <Rating value={hotel.stars} size={'large'} readOnly/> 
+                            </Grid> 
                             <Grid xs={12} lg={7}>
                                 <AmenityList amenities={hotel.amenities}/>
                             </Grid>

@@ -16,4 +16,9 @@ export class CheckinHotelApi {
         return fetch( `${constants.SERVER_HOST}/hotel/price?hotelId=${idHotel}&from=${from}&until=${until}&occupancy=${occupancy}`)
             .then(r => r.json());
     }
+
+    getHotelByID(id) {
+        return fetch(`${constants.SERVER_HOST}/hotel/id/${id}`)
+            .then(r => r.json());
+    }
 }

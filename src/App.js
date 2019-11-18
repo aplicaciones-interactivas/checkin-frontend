@@ -7,6 +7,7 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import NavBar from "./components/NavBar";
 import Hotels from "./components/Hotels";
+import HotelInfo from "./components/hotelInfo";
 
 Array.prototype.remove = function (element) {
     var index = this.indexOf(element);
@@ -32,7 +33,10 @@ function App() {
     const HotelsComponent = () => {
         return <Hotels/>;
     };
-
+    const HotelInfoComponent = () => {
+        return <HotelInfo/>;
+    };
+    
 
     return (
         <Router>
@@ -42,6 +46,7 @@ function App() {
                 <Route path="/" exact strict component={HomeComponent}/>
                 <Route path="/SignIn" exact strict component={SignInComponent}/>
                 <Route path="/SignUp" exact strict component={SignUpComponent}/>
+                <Route path="/HotelInfo" exact strict component={HotelInfoComponent}/>
             </div>
         </Router>
     );
