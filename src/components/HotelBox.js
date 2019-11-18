@@ -1,8 +1,7 @@
 import React from 'react';
-import {Box, Card, Link, Typography} from "@material-ui/core";
+import {Card, Link, Typography} from "@material-ui/core";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {red} from "@material-ui/core/colors";
 import HotelImage from "./HotelImage";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
@@ -10,17 +9,8 @@ import Rating from "@material-ui/lab/Rating";
 import {AmenityList} from "./AmenityList";
 import Price from "./Price";
 import Button from "@material-ui/core/Button";
-import th from "moment/locale/th";
 
 const styles = theme => ({
-    card: {
-        [theme.breakpoints.down('sm')]: {
-            height: '410px',
-        },
-        [theme.breakpoints.up('lg')]: {
-            height: '240px'
-        }
-    },
     expand: {
         transform: 'rotate(0deg)',
         marginLeft: 'auto',
@@ -107,7 +97,7 @@ class HotelBox extends React.Component {
                                 <AmenityList amenities={hotel.amenities}/>
                             </Grid>
                         </Grid>
-                        <Grid className={classes.containerBorderButton} container xs={12} lg={2} align="center"
+                        <Grid className={`${classes.containerBorderButton} ${classes.linkContainer}`} container xs={12} lg={2} align="center"
                               justify="center" alignItems={'center'} direction="row">
                             <Grid item xs={12}>
                                 <Grid item xs={12}>Reserva ya por</Grid>
@@ -137,33 +127,3 @@ HotelBox.propTypes = {
 };
 
 export default withStyles(styles)(HotelBox);
-
-/*
- <CardContent>
-                    <Grid container className={classes.hotelGrid} align={'left'} justify={'left'}>
-                        <Grid align={'center'} item xs={12} md={3}>
-                            <HotelImage isGrid={true} images={hotel.__hotelImages__}/>
-                        </Grid>
-                    </Grid>
-                </CardContent>
-                <Grid item xs={12}>
-                    <Link underline={'none'} className={classes.anchorNotUnderlined} children={
-                        <Typography>{hotel.name}</Typography>
-                    }/>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <Rating value={hotel.stars} size={'large'} readOnly/>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <AmenityList amenities={hotel.amenities}/>
-                </Grid>
-                <Grid item xs={12} md={3}>
-                    <Price hotelId={hotel.id} from={search.from} until={search.until}
-                           occupancy={search.occupancy}/>
-                </Grid>
-                <Grid item xs={12} md={3}>
-                    <Button className={classes.masInfoButton} variant="contained" color="primary">
-                        + Mas Info
-                    </Button>
-                </Grid>
-                 */

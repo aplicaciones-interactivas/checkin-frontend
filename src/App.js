@@ -1,12 +1,13 @@
 import React from 'react';
 import './App.css';
-import Home from './components/Home';
+import Home from './views/Home';
 import {BrowserRouter as Router} from 'react-router-dom';
 import Route from 'react-router-dom/Route';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
+import SignIn from './views/SignIn';
+import SignUp from './views/SignUp';
 import NavBar from "./components/NavBar";
-import Hotels from "./components/Hotels";
+import Hotels from "./views/Hotels";
+import Reservation from "./views/Reservation";
 
 Array.prototype.remove = function (element) {
     var index = this.indexOf(element);
@@ -33,6 +34,10 @@ function App() {
         return <Hotels/>;
     };
 
+    const ReservationComponent = () => {
+        return <Reservation/>
+    }
+
 
     return (
         <Router>
@@ -40,8 +45,9 @@ function App() {
                 <NavBar/>
                 <Route path="/Hotels" exact strict component={HotelsComponent}/>
                 <Route path="/" exact strict component={HomeComponent}/>
-                <Route path="/SignIn" exact strict component={SignInComponent}/>
+                <Route path="/SignIn" exact strict render={(props) => <SignInComponent {...props}/>}/>
                 <Route path="/SignUp" exact strict component={SignUpComponent}/>
+                <Route path={"/Reservation"} component={ReservationComponent}/>
             </div>
         </Router>
     );

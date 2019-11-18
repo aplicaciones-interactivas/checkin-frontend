@@ -23,17 +23,23 @@ class Price extends React.Component {
     }
 
     componentDidMount() {
-        const {hotelId, from, until, occupancy} = this.props;
-        this.hotelApi.getPrice(hotelId, from, until, occupancy)
-            .then(price => this.setState({price: price.price}));
+        const {hotelId, from, until, occupancy, price} = this.props;
+        if (!price) {
+            this.hotelApi.getPrice(hotelId, from, until, occupancy)
+                .then(price => this.setState({price: price.price}));
+        } else {
+            this.setState({price: price});
+        }
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, notShowPerNigth} = this.props;
         return (
             <div>
                 <Box fontWeight="fontWeightBold" className={classes.priceColor}>$ {this.state.price}</Box>
-                <Box fontSize={'10px'}>/por noche</Box>
+                {
+                    notShowPerNigth ? null : (<Box fontSize={'10px'}>/por noche</Box>)
+                }
             </div>
         )
     }

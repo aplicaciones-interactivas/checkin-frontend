@@ -1,25 +1,13 @@
 import React from "react";
 import {parse} from "query-string";
 import Grid from "@material-ui/core/Grid";
-import Buscador from "./Buscador";
-import PropTypes from "prop-types";
-import {Box, Card, CardContent, Paper, withStyles} from "@material-ui/core";
+import Buscador from "../components/Buscador";
 import DateFnsUtils from "@date-io/date-fns";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import {CheckinHotelApi} from "../api/CheckinHotelApi";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import SnackbarContentWrapper from "./SnackbarContentWrapper";
-import HotelImage from "./HotelImage";
-import CardMedia from "@material-ui/core/CardMedia";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
-import HotelsList from "./HotelsList";
+import HotelsList from "../components/HotelsList";
 
-
-const styles = theme => ({});
-
-
-class Hotels extends React.Component {
+export default class Hotels extends React.Component {
 
     constructor(props) {
         super(props);
@@ -30,10 +18,6 @@ class Hotels extends React.Component {
     componentDidMount() {
         this.hotelApi.getFilterHotels(window.location.search)
             .then(data => this.setState({hotels: data}));
-    }
-
-    renderHotelBoxes(hotels) {
-        return
     }
 
     render() {
@@ -52,11 +36,4 @@ class Hotels extends React.Component {
             </div>
         </MuiPickersUtilsProvider>);
     }
-
 }
-
-Hotels.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Hotels);

@@ -7,8 +7,9 @@ import PropTypes from "prop-types";
 
 const styles = theme => ({
     icon: {
-        padding: theme.spacing(1)
-    }
+        padding: theme.spacing(1),
+    },
+    '& img': {width:'30px'}
 });
 
 class Amenity extends React.Component {
