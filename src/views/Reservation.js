@@ -40,20 +40,30 @@ class Reservation extends React.Component {
         this.placesApi = new CheckInPlacesApi();
         this.reservationApi = new CheckinReservationApi();
         this.onReservation = this.onReservation.bind(this);
+        this.resolveReservationResponse = this.resolveReservationResponse.bind(this);
+        this.reserve = this.reserve.bind(this);
     }
 
-    onReservation() {
+    onReservation(method) {
         if (cookie.load('token') === undefined) {
             this.setState({toLogin: true});
         } else {
-            this.reservationApi.reserve(cookie.load('token'), this.state.search.from, this.state.search.until, this.state.search.roomTypeId)
-                .then(res => {
-                    if (res.statusCode) {
-                        this.setState({reservationStatus: false});
-                    } else {
-                        this.setState({reservationStatus: true});
-                    }
-                });
+            method();
+        }
+    }
+
+    reserve() {
+        this.reservationApi.reserve(cookie.load('token'), this.state.search.from, this.state.search.until, this.state.search.roomTypeId)
+            .then(res => {
+                this.resolveReservationResponse(res);
+            });
+    }
+
+    resolveReservationResponse(res) {
+        if (res.statusCode) {
+            this.setState({reservationStatus: false});
+        } else {
+            this.setState({reservationStatus: true});
         }
     }
 
@@ -162,7 +172,11 @@ class Reservation extends React.Component {
                                 Podes agregar
                             </Box>
                         </Typography>
-                        <MealPlanTable mealPlans={this.state.mealPlans}></MealPlanTable>
+                        <MealPlanTable mealPlans={this.state.mealPlans} from={this.state.search.from}
+                                       until={this.state.search.until}
+                                       roomTypeId={this.state.search.roomTypeId}
+                                       onReservationFinish={this.resolveReservationResponse}
+                                       validateBeforeReserve={this.onReservation}></MealPlanTable>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant={'h6'}>
@@ -175,7 +189,7 @@ class Reservation extends React.Component {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                onClick={this.onReservation}
+                                onClick={() => this.onReservation(this.reserve)}
                             >
                                 Reservar
                             </Button>
