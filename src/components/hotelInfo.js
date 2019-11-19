@@ -8,7 +8,7 @@ import {AmenityList} from "./AmenityList";
 import Rating from "@material-ui/lab/Rating";
 import PropTypes from "prop-types";
 import Table from './Table';
-import {Card} from "@material-ui/core";
+import {Card, CardContent} from "@material-ui/core";
 
 const styles = theme => ({
 
@@ -56,27 +56,29 @@ class HotelInfo extends React.Component {
 
         return (
            <Card>
-            <Grid container direction="column" lg={10}>
-                <Grid item xs={3} lg={12}>
-                    <HotelImage isGrid={true} images={images} />
+            <CardContent>
+                <Grid container direction="column" lg={10}>
+                    <Grid item xs={3} lg={12}>
+                        <HotelImage isGrid={true} images={images} />
+                    </Grid>
+                    <Grid container xs={3} lg={12} direction="row" alignItems="center" justify={'flex-start'} spacing={1}>
+                        <Grid item><h2>SHERATON - </h2></Grid>
+                        <Grid item><h3>Buenos Aires - </h3></Grid>
+                        <Grid item><h3>Argentina</h3></Grid>
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                        <Rating value={3} size={'large'} readOnly/>
+                    </Grid>
+                    <Grid item xs={12} md={12} direction="column">
+                        <p>Facilidades</p>
+                        <AmenityList amenities={amens}/>
+                    </Grid>
+                    <Grid item>
+                        <p>Habitaciones</p>
+                        <Table/>
+                    </Grid>
                 </Grid>
-                <Grid container xs={3} lg={12} direction="row" alignItems="center" justify={'flex-start'} spacing={1}>
-                    <Grid item><h2>SHERATON - </h2></Grid>
-                    <Grid item><h3>Buenos Aires - </h3></Grid>
-                    <Grid item><h3>Argentina</h3></Grid>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <Rating value={3} size={'large'} readOnly/>
-                </Grid>
-                <Grid item xs={12} md={12} direction="column">
-                    <p>Facilidades</p>
-                    <AmenityList amenities={amens}/>
-                </Grid>
-                <Grid item>
-                    <p>Habitaciones</p>
-                    <Table/>
-                </Grid>
-            </Grid>
+            </CardContent>
            </Card>
         )
     }
