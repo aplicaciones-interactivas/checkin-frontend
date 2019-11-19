@@ -83,7 +83,7 @@ class HotelBox extends React.Component {
                     <Grid container>
                         <Grid item align={'center'} xs={12} lg={3}>
                             <Grid item xs={3} lg={12}>
-                                <HotelImage isGrid={true} images={hotel.__hotelImages__}/>
+                                <HotelImage images={hotel.__hotelImages__}/>
                             </Grid>
                         </Grid>
                         <Grid item xs={12} lg={7} className={classes.linkContainer}>
@@ -91,8 +91,8 @@ class HotelBox extends React.Component {
                                 <Typography className={classes.paddingTypography}>{hotel.name}</Typography>
                             }/>
                             <Grid xs={12} lg={7}>
-                                <Rating value={hotel.stars} size={'large'} readOnly/> 
-                            </Grid> 
+                                <Rating value={hotel.stars} size={'large'} readOnly/>
+                            </Grid>
                             <Grid xs={12} lg={7}>
                                 <AmenityList amenities={hotel.amenities}/>
                             </Grid>

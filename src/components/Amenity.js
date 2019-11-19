@@ -4,12 +4,21 @@ import Icon from "@material-ui/core/Icon";
 import Tooltip from "@material-ui/core/Tooltip";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
+import Checkbox from "@material-ui/core/Checkbox";
+import Box from "@material-ui/core/Box";
+import Rating from "@material-ui/lab/Rating";
+import Grid from "@material-ui/core/Grid";
 
 const styles = theme => ({
     icon: {
         padding: theme.spacing(1),
     },
-    '& img': {width:'30px'}
+    '& img': {width: '30px'},
+    alignChilds: {
+        '& span': {
+            verticalAlign: 'middle'
+        }
+    }
 });
 
 class Amenity extends React.Component {
@@ -17,11 +26,20 @@ class Amenity extends React.Component {
         const {amenity, classes} = this.props;
         const iconPath = `/assets/icons/amenities/${amenity.code}.svg`;
         return (
-            <Tooltip title={amenity.description}>
-                <Icon className={classes.icon}>
-                    <img src={iconPath}/>
-                </Icon>
-            </Tooltip>
+            <span className={classes.alignChilds}>
+                <span>
+                <Tooltip title={amenity.description}>
+                    <Icon className={classes.icon}>
+                        <img src={iconPath}/>
+                    </Icon>
+                </Tooltip>
+                </span>
+                <span>
+                    {
+                        "asdasdasddasd"
+                    }
+                </span>
+            </span>
         );
     }
 }

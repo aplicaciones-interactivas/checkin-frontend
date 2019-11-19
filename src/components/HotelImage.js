@@ -15,7 +15,17 @@ const styles = theme => ({
         [theme.breakpoints.up('md')]: {
             height: '25vh'
         },
-        backgroundSize: 'cover'
+        backgroundSize: 'contains'
+    },
+    mediaNoList: {
+        width: '100%',
+        [theme.breakpoints.down('sm')]: {
+            height: '50vh'
+        },
+        [theme.breakpoints.up('md')]: {
+            height: '50vh'
+        },
+        backgroundSize: 'contain'
     },
     nofoto: {
         border: 'black',
@@ -31,13 +41,14 @@ class HotelImage extends React.Component {
     }
 
     getImages() {
-        const {images, classes} = this.props;
+        const {images, classes, isGrid} = this.props;
         if (images.length === 0) {
-            return <Box border={1} borderColor="grey.500"><CardMedia className={`${classes.media} ${classes.nofoto}`}
-                                                                     image={`/assets/images/nofoto.jpg`}></CardMedia></Box>
+            return <Box border={1} borderColor="grey.500"><CardMedia
+                className={`${isGrid ? classes.mediaNoList : classes.media} ${classes.nofoto}`}
+                image={`/assets/images/nofoto.jpg`}></CardMedia></Box>
         } else {
             return images.map(image => {
-                return <CardMedia className={classes.media}
+                return <CardMedia className={isGrid ? classes.mediaNoList : classes.media}
                                   image={`${constants.SERVER_HOST}/${image.path}`}></CardMedia>
             })
         }

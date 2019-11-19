@@ -20,6 +20,7 @@ import cookie from 'react-cookies';
 import Redirect from "react-router-dom/es/Redirect";
 import tr from "moment/locale/tr";
 import SnackbarContentWrapper from "../components/SnackbarContentWrapper";
+import HotelNameLocation from "../components/HotelNameLocation";
 
 const styles = theme => ({
 
@@ -102,7 +103,7 @@ class Reservation extends React.Component {
             if (this.state.toLogin) {
                 return (<Redirect
                     to={`/SignIn?action=${window.location.pathname}&search=${encodeURIComponent(window.location.search)}`}/>)
-            } else if (this.state.hotel && this.state.mealPlans && this.state.roomType && this.state.totalPrice) {
+            } else if (this.state.hotel && this.state.mealPlans && this.state.roomType && this.state.totalPrice && this.state.country) {
                 return (<Grid container direction={'row'}>
                     <Grid item xs={12} md={2}>
                         <Box pl={2}>
@@ -113,9 +114,7 @@ class Reservation extends React.Component {
                     <Grid item xs={12} md={10}>
                         <Box pl={2}>
                             <Grid item xs={12}>
-                                <Typography variant={'h4'}>
-                                    {this.state.hotel ? this.state.hotel.name : ''} - {this.state.hotel ? this.state.hotel.city : ''} - {this.state.country}
-                                </Typography>
+                                <HotelNameLocation hotel={this.state.hotel} country={this.state.country}/>
                             </Grid>
                             <Grid item xs={12}>
                                 <Rating value={this.state.hotel ? this.state.hotel.stars : null}
