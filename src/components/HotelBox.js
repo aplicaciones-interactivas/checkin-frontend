@@ -9,6 +9,7 @@ import Rating from "@material-ui/lab/Rating";
 import {AmenityList} from "./AmenityList";
 import Price from "./Price";
 import Button from "@material-ui/core/Button";
+import {Link as ReactLink} from 'react-router-dom';
 
 const styles = theme => ({
     expand: {
@@ -87,7 +88,8 @@ class HotelBox extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid item xs={12} lg={7} className={classes.linkContainer}>
-                            <Link href={`/HotelDetails/${hotel.id}${this.formatSearch(search)}`} underline={'none'} className={classes.anchorNotUnderlined} children={
+                            <Link href={`/HotelDetails/${hotel.id}${this.formatSearch(search)}`} underline={'none'}
+                                  className={classes.anchorNotUnderlined} children={
                                 <Typography className={classes.paddingTypography}>{hotel.name}</Typography>
                             }/>
                             <Grid xs={12} lg={7}>
@@ -97,7 +99,8 @@ class HotelBox extends React.Component {
                                 <AmenityList amenities={hotel.amenities}/>
                             </Grid>
                         </Grid>
-                        <Grid className={`${classes.containerBorderButton} ${classes.linkContainer}`} container xs={12} lg={2} align="center"
+                        <Grid className={`${classes.containerBorderButton} ${classes.linkContainer}`} container xs={12}
+                              lg={2} align="center"
                               justify="center" alignItems={'center'} direction="row">
                             <Grid item xs={12}>
                                 <Grid item xs={12}>Reserva ya por</Grid>
@@ -105,16 +108,19 @@ class HotelBox extends React.Component {
                                     <Price hotelId={hotel.id} from={search.from} until={search.until}
                                            occupancy={search.occupancy}/>
                                 </Grid>
-                                <Button className={classes.masInfoButton}
-                                        href={`/HotelDetails/${hotel.id}${this.formatSearch(search)}`}
-                                        variant="contained" color="primary">
-                                    Mas Info
-                                </Button>
+                                <ReactLink to={{
+                                    pathname: `HotelInfo/${hotel.id}`,
+                                    state: search
+                                }}>
+                                    <Button className={classes.masInfoButton}
+                                            variant="contained" color="primary">
+                                        Mas Info
+                                    </Button>
+                                </ReactLink>
                             </Grid>
                         </Grid>
                     </Grid>
                 </CardContent>
-
             </Card>
         );
     }

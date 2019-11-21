@@ -3,10 +3,10 @@ import Amenity from "./Amenity";
 
 export class AmenityList extends React.Component {
     render() {
-        const {amenities} = this.props;
+        const {amenities, showDescription} = this.props;
         return (
             amenities.map(amenity => {
-                return <Amenity amenity={amenity}/>
+                return <Amenity amenity={amenity} showDescription={showDescription}/>
             })
         );
     }

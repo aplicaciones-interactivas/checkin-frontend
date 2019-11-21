@@ -18,15 +18,31 @@ const styles = theme => ({
         '& span': {
             verticalAlign: 'middle'
         }
+    },
+    fullWidth: {
+        width: '100%'
     }
 });
 
 class Amenity extends React.Component {
+
+    showDescription(amenity, showDescription) {
+        console.log(showDescription)
+        if (showDescription !== undefined) {
+            return (<span><span>
+                    {
+                        amenity.description
+                    }
+            </span><br/></span>);
+        }
+        return null;
+    }
+
     render() {
-        const {amenity, classes} = this.props;
+        const {amenity, classes, showDescription} = this.props;
         const iconPath = `/assets/icons/amenities/${amenity.code}.svg`;
         return (
-            <span className={classes.alignChilds}>
+            <span className={`${classes.alignChilds} ${showDescription ? classes.fullWidth : null}`}>
                 <span>
                 <Tooltip title={amenity.description}>
                     <Icon className={classes.icon}>
@@ -34,11 +50,7 @@ class Amenity extends React.Component {
                     </Icon>
                 </Tooltip>
                 </span>
-                <span>
-                    {
-                        "asdasdasddasd"
-                    }
-                </span>
+                {this.showDescription(amenity, showDescription)}
             </span>
         );
     }

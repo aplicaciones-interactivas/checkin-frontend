@@ -7,4 +7,9 @@ export default class CheckInRoomTypeApi {
             .then(res => res.json());
     }
 
+    findAvailableForHotelId(hotelId, from, until, occupancy) {
+        return fetch(`${constants.SERVER_HOST}/room-type/availables?hotelId=${hotelId}&from=${from}&until=${until}&occupancy=${occupancy}`)
+            .then(res => res.json());
+    }
+
 }

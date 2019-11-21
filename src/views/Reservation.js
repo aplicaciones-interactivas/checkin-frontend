@@ -34,8 +34,16 @@ class Reservation extends React.Component {
 
     constructor(props) {
         super(props);
-        const search = parse(window.location.search);
-        this.state = {search: search, toLogin: false};
+        let search = this.props.location.state.search ? this.props.location.state.search : this.props.location.state;
+        if (search.hotel) {
+            search.hotelId = search.hotel.id;
+        }
+
+        this.state = {
+            search: search,
+            toLogin: false,
+            action: 'Reservation'
+        };
         this.hotelApi = new CheckinHotelApi();
         this.roomTypeApi = new CheckInRoomTypeApi();
         this.placesApi = new CheckInPlacesApi();
@@ -54,7 +62,7 @@ class Reservation extends React.Component {
     }
 
     reserve() {
-        this.reservationApi.reserve(cookie.load('token'), this.state.search.from, this.state.search.until, this.state.search.roomTypeId)
+        this.reservationApi.reserve(cookie.load('token'), this.state.search.from, this.state.search.until, this.state.search.roomType.id)
             .then(res => {
                 this.resolveReservationResponse(res);
             });
@@ -82,9 +90,9 @@ class Reservation extends React.Component {
         });
         this.hotelApi.getMealPlansById(this.state.search.hotelId)
             .then(data => this.setState({mealPlans: data}));
-        this.roomTypeApi.findByIdAndHotelId(this.state.search.roomTypeId, this.state.search.hotelId)
+        this.roomTypeApi.findByIdAndHotelId(this.state.search.roomType.id, this.state.search.hotelId)
             .then(data => this.setState({roomType: data}));
-        this.reservationApi.calculateTotal(this.state.search.roomTypeId, this.state.search.from, this.state.search.until)
+        this.reservationApi.calculateTotal(this.state.search.roomType.id, this.state.search.from, this.state.search.until)
             .then(data => this.setState({totalPrice: data.price}));
     }
 
@@ -102,7 +110,10 @@ class Reservation extends React.Component {
         } else {
             if (this.state.toLogin) {
                 return (<Redirect
-                    to={`/SignIn?action=${window.location.pathname}&search=${encodeURIComponent(window.location.search)}`}/>)
+                    to={{
+                        pathname: `/SignIn`,
+                        state: this.state
+                    }}/>)
             } else if (this.state.hotel && this.state.mealPlans && this.state.roomType && this.state.totalPrice && this.state.country) {
                 return (<Grid container direction={'row'}>
                     <Grid item xs={12} md={2}>
@@ -173,7 +184,7 @@ class Reservation extends React.Component {
                         </Typography>
                         <MealPlanTable mealPlans={this.state.mealPlans} from={this.state.search.from}
                                        until={this.state.search.until}
-                                       roomTypeId={this.state.search.roomTypeId}
+                                       roomTypeId={this.state.search.roomType.id}
                                        onReservationFinish={this.resolveReservationResponse}
                                        validateBeforeReserve={this.onReservation}></MealPlanTable>
                     </Grid>

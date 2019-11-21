@@ -18,28 +18,6 @@ Array.prototype.remove = function (element) {
 }
 
 function App() {
-
-    const HomeComponent = () => {
-        return <Home/>;
-    };
-
-    const SignInComponent = () => {
-        return <SignIn/>;
-    };
-
-    const SignUpComponent = () => {
-        return <SignUp/>;
-    };
-
-    const HotelsComponent = () => {
-        return <Hotels/>;
-    };
-
-    const ReservationComponent = () => {
-        return <Reservation/>
-    }
-
-
     return (
         <Router>
             <div className={"principal"}>

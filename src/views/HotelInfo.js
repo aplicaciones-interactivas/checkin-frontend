@@ -7,11 +7,12 @@ import {withStyles} from '@material-ui/styles';
 import {AmenityList} from "../components/AmenityList";
 import Rating from "@material-ui/lab/Rating";
 import PropTypes from "prop-types";
-import Table from '../components/Table';
-import {Card} from "@material-ui/core";
+import RoomList from '../components/Table';
+import {Card, Typography} from "@material-ui/core";
 import HotelNameLocation from "../components/HotelNameLocation";
 import CheckinPlacesApi from "../api/CheckinPlacesApi";
 import Box from "@material-ui/core/Box";
+import CheckInRoomTypeApi from "../api/CheckInRoomTypeApi";
 
 
 const styles = theme => ({
@@ -26,13 +27,15 @@ class HotelInfo extends React.Component {
         super(props);
         this.hotelApi = new CheckinHotelApi();
         this.placesApi = new CheckinPlacesApi();
-        const search = parse(window.location.search);
-        this.state = {search: search}
+        this.roomTypeApi = new CheckInRoomTypeApi();
+        this.state = {search: this.props.location.state}
         this.componentDidMount = this.componentDidMount.bind(this)
     }
 
     componentDidMount() {
         const {hotelId} = this.props.match.params;
+        const {from, until, occupancy} = this.state.search;
+
         this.hotelApi.getById(hotelId)
             .then(data => {
                 this.setState({hotel: data});
@@ -43,61 +46,47 @@ class HotelInfo extends React.Component {
                     this.setState({country: countryInfo.translations.es});
                 });
         });
+        this.roomTypeApi.findAvailableForHotelId(hotelId, from, until, occupancy)
+            .then(roomTypes => this.setState({roomTypes: roomTypes}));
     }
 
     render() {
-        if (this.state.hotel && this.state.country) {
-
-
-            const images = [
-                {
-                    original: 'https://picsum.photos/id/1018/1000/600/',
-                    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-                },
-                {
-                    original: 'https://picsum.photos/id/1015/1000/600/',
-                    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-                },
-                {
-                    original: 'https://picsum.photos/id/1019/1000/600/',
-                    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-                },
-            ];
-
-            const amens = [
-                {
-                    beach: 'beach'
-                }
-            ];
-
+        if (this.state.hotel && this.state.country && this.state.roomTypes) {
             const {classes} = this.props;
             return (
                 <Grid container xs={12} align={'center'} justify={'center'}>
                     <Grid item direction="column" xs={10}>
 
-                            <Grid container xs={12} align={'left'}>
-                                <Box p={2} className={classes.fullWidth}>
+                        <Grid container xs={12} align={'left'}>
+                            <Box p={2} className={classes.fullWidth}>
+                                <Grid item xs={12}>
+                                    <HotelImage isGrid={true}
+                                                images={this.state.hotel ? this.state.hotel.__hotelImages__ : []}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <HotelNameLocation hotel={this.state.hotel} country={this.state.country}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Rating value={this.state.hotel ? this.state.hotel.stars : null}
+                                            size={'large'} readOnly/>
+                                </Grid>
+                                <Box mt={2}>
                                     <Grid item xs={12}>
-                                        <HotelImage isGrid={true}
-                                                    images={this.state.hotel ? this.state.hotel.__hotelImages__ : []}/>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <HotelNameLocation hotel={this.state.hotel} country={this.state.country}/>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Rating value={this.state.hotel ? this.state.hotel.stars : null}
-                                                size={'large'} readOnly/>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <AmenityList withNames={true}
-                                            amenities={this.state.hotel ? this.state.hotel.amenities : []}/>
-                                    </Grid>
-                                    <Grid item>
-                                        <p>Habitaciones</p>
-                                        <Table/>
+                                        <Typography variant={'h6'}>Comodidades</Typography>
+                                        <AmenityList withNames={true} showDescription={true}
+                                                     amenities={this.state.hotel ? this.state.hotel.amenities : []}/>
                                     </Grid>
                                 </Box>
-                            </Grid>
+                                <Box mt={2}>
+                                    <Grid item>
+                                        <Typography variant={'h6'}>Habitaciones</Typography>
+                                        <RoomList roomTypes={this.state.roomTypes} from={this.state.search.from}
+                                                  until={this.state.search.until}
+                                                  occupancy={this.state.search.occupancy}/>
+                                    </Grid>
+                                </Box>
+                            </Box>
+                        </Grid>
 
                     </Grid>
 

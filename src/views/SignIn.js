@@ -13,6 +13,7 @@ import cookie from 'react-cookies'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ErrorBox from "../components/ErrorBox";
 import {parse} from "query-string";
+import {Redirect} from "react-router-dom";
 
 const useStyles = theme => ({
     paper: {
@@ -39,7 +40,9 @@ class SignIn extends React.Component {
         super(props);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.state = {next: parse(window.location.search)};
+        this.state = this.props.location.state;
+
+        this.conditionalRender = this.conditionalRender.bind(this);
     }
 
     handleChange(field) {
@@ -65,65 +68,85 @@ class SignIn extends React.Component {
         })
             .then(data => {
                 cookie.save('token', data.accessToken);
-                console.log(this.state.next);
-                window.location = (Object.keys(this.state.next).length !== 0) ? this.state.next.action + decodeURIComponent(this.state.next.search) : '/';
+                this.setState({logged: true});
             })
             .catch(err => this.setState({error: 'Revisa tu usuario y contraseña'}));
     }
 
-    render() {
+    conditionalRender() {
         const {classes} = this.props;
-        return (<Container component="main" maxWidth="xs">
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <AccountCircleIcon/>
-                </Avatar>
-                <form onSubmit={this.handleOnSubmit} onChange={this.handleChange} className={classes.form}>
-                    <ErrorBox message={this.state.error}></ErrorBox>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Nombre de usuario o email"
-                        name="username"
-                        autoComplete="email"
-                        autoFocus
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Contraseña"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                    />
-                    <Button
-                        onClick={this.handleOnSubmit}
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Entrar
-                    </Button>
-                    <Grid container justify="center">
-                        <Grid item>
-                            <Link href="/SignUp" variant="body2">
-                                {"¿No tenes cuenta? Registrate"}
-                            </Link>
+        if (this.state.logged) {
+            if (this.state.action) {
+                return (<Redirect to={{
+                    pathname: 'Reservation',
+                    state: this.state
+                }}/>);
+            } else {
+                return (<Redirect to={'/'}/>)
+            }
+        } else {
+            return (<Container component="main" maxWidth="xs">
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <AccountCircleIcon/>
+                    </Avatar>
+                    <form onSubmit={this.handleOnSubmit} onChange={this.handleChange} className={classes.form}>
+                        <ErrorBox message={this.state.error}></ErrorBox>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Nombre de usuario o email"
+                            name="username"
+                            autoComplete="email"
+                            autoFocus
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Contraseña"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                        />
+                        <Button
+                            onClick={this.handleOnSubmit}
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Entrar
+                        </Button>
+                        <Grid container justify="center">
+                            <Grid item>
+                                <Link href="/SignUp" variant="body2">
+                                    {"¿No tenes cuenta? Registrate"}
+                                </Link>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </form>
-            </div>
-            <Box mt={8}>
-                <Copyright/>
-            </Box>
-        </Container>);
+                    </form>
+                </div>
+                <Box mt={8}>
+                    <Copyright/>
+                </Box>
+            </Container>);
+        }
+    }
+
+
+    render() {
+
+        return (<span>
+            {
+                this.conditionalRender()
+            }
+        </span>);
     }
 }
 
