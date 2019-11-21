@@ -1,11 +1,25 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
-import {Card, CardContent} from "@material-ui/core";
+import {Card, CardContent, withStyles} from "@material-ui/core";
 import HotelImage from './HotelImage';
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Price from './Price';
+import PropTypes from "prop-types";
 
-class MisReservas extends React.Component{
+const styles = theme => ({
+    infoText: {
+        
+    }
+});
+
+
+class MisReservas extends React.Component {
+    
+    constructor (props) {
+        super(props);
+    }
+    
     render() {
         return (
             <div>
@@ -16,14 +30,17 @@ class MisReservas extends React.Component{
                     <Grid container lg={10}>
                     <Card>
                         <CardContent>
-                                <Grid container direction="row" spacing={3}>
+                                <Grid container direction="row">
                                     <Grid container lg={4} justify="center" alignItems="flex-end">
                                         <HotelImage isGrid={true} images={["","",""]} />
                                     </Grid>
                                     <Grid container lg={4}>
-                                        <Typography variant="h4">Nombre Hotel - Ciudad - País</Typography>
-                                        <h2>Fecha Desde - Fecha Hasta</h2>
-                                        <h3>Tipo de Habitación - Precio</h3>
+                                        <Grid item><Typography variant="h4">Hotel - Ciudad - País</Typography></Grid>
+                                        <Grid item><Typography variant="h5">Fecha Desde - Fecha Hasta</Typography></Grid>
+                                        <Grid item>
+                                            <Typography variant="h6">Tipo de Habitación</Typography>
+                                            <Price price={'12345'}/>
+                                        </Grid>
                                     </Grid>
                                     <Grid container lg={4} justify="center" alignItems="center">
                                         <Grid item>
@@ -42,6 +59,8 @@ class MisReservas extends React.Component{
     }
 }
 
+MisReservas.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
 
-
-export default (MisReservas);
+export default withStyles(styles)(MisReservas);
