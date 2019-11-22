@@ -21,6 +21,7 @@ import Redirect from "react-router-dom/es/Redirect";
 import tr from "moment/locale/tr";
 import SnackbarContentWrapper from "../components/SnackbarContentWrapper";
 import HotelNameLocation from "../components/HotelNameLocation";
+import NavBar from "../components/NavBar";
 
 const styles = theme => ({
 
@@ -217,6 +218,7 @@ class Reservation extends React.Component {
         const {classes} = this.props;
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <NavBar/>
                 <Grid align={'center'} justify={'center'} container direction={'row'}>
                     <Grid item direction={'column'} xs={11} align={'left'} justify={'left'}>
                         <br/>

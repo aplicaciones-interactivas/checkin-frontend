@@ -12,6 +12,7 @@ import PropTypes, {instanceOf} from "prop-types";
 import cookie from 'react-cookies'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ErrorBox from "../components/ErrorBox";
+import NavBar from "../components/NavBar";
 
 const useStyles = theme => ({
     paper: {
@@ -75,7 +76,7 @@ class SignUp extends React.Component {
 
     render() {
         const {classes} = this.props;
-        return (<Container component="main" maxWidth="xs">
+        return (<span><NavBar/><Container component="main" maxWidth="xs">
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
                     <AccountCircleIcon/>
@@ -172,7 +173,7 @@ class SignUp extends React.Component {
             <Box mt={8}>
                 <Copyright/>
             </Box>
-        </Container>);
+        </Container></span>);
     }
 }
 

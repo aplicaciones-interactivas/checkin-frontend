@@ -26,4 +26,23 @@ export class CheckinHotelApi {
         return fetch(`${constants.SERVER_HOST}/hotel/${id}/mealPlan`)
             .then(res => res.json());
     }
+
+    getByUser(token) {
+        return fetch(`${constants.SERVER_HOST}/hotel/user`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(res => res.json());
+
+    }
+
+    delete(id, token) {
+        return fetch(`${constants.SERVER_HOST}/hotel/${id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
 }

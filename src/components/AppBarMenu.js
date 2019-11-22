@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import cookie from "react-cookies";
 import PropTypes from "prop-types";
 import {NavLink, withRouter} from "react-router-dom";
+import CheckinUserApi from "../api/CheckinUserApi";
 
 const styles = theme => ({
     sectionDesktop: {
@@ -36,7 +37,8 @@ class AppBarMenu extends React.Component {
             user: null,
             isMenuOpen: true,
             isMobileMenuOpen: Boolean(this.mobileMoreAnchorEl)
-        }
+        };
+        this.userApi = new CheckinUserApi();
         this.navbarOptionsMobile = this.navbarOptionsMobile.bind(this);
         this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
         this.handleMobileMenuClose = this.handleMobileMenuClose.bind(this);
@@ -46,13 +48,7 @@ class AppBarMenu extends React.Component {
     componentDidMount() {
         const token = cookie.load('token');
         if (token) {
-            fetch('http://localhost:3200/user/profile', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                },
-                mode: 'cors'
-            }).then(res => res.json())
+            this.userApi.profile(token)
                 .then(data => {
                     if (!data.error) {
                         this.setState({user: data});
@@ -170,7 +166,7 @@ class AppBarMenu extends React.Component {
             } else {
                 return (
                     <div>
-                        <Button color="inherit" href={'/Profile'}>Perfil ${this.state.user.name}</Button>
+                        <Button color="inherit" href={'/Profile'}>{this.state.user.name}</Button>
                         <Button color="inherit" href={'/Administration'}>Administracion</Button>
                         <Button id='sign-out-button' onClick={this.handleSingOut} color="inherit" href={'/'}>Cerrar
                             sesion</Button>

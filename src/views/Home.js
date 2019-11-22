@@ -7,6 +7,10 @@ import Grid from "@material-ui/core/Grid";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Buscador from "../components/Buscador";
+import CheckinUserApi from "../api/CheckinUserApi";
+import cookie from "react-cookies";
+import {Redirect} from "react-router-dom";
+import NavBar from "../components/NavBar";
 
 const styles = theme => ({
     root: {
@@ -47,27 +51,47 @@ const styles = theme => ({
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {waitingForUser: false};
+        this.userApi = new CheckinUserApi();
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.conditionalRender = this.conditionalRender.bind(this);
+    }
+
+    componentDidMount() {
+        let token = cookie.load('token');
+        if (token) {
+            this.setState({waitingForUser: true, token: token});
+            this.userApi.profile(token).then(user => this.setState({user: user}));
+        }
+    }
+
+    conditionalRender() {
+        const {classes} = this.props;
+        if (this.state.user && this.state.user.roles && (this.state.user.roles && this.state.user.roles.includes('ADMIN'))) {
+            return <Redirect to={'/Administration'}/>
+        } else if (!this.state.waitingForUser || (this.state.user && this.state.user.roles && (this.state.user.roles && this.state.user.roles.includes('USER')))) {
+            return (
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <NavBar/>
+                    <div className={classes.root}>
+                        <Grid container direction={'row'} className={'background-container container-fluid'}
+                              align="center"
+                              justify="center">
+                            <Grid item direction={'column'}>
+                                <Typography variant={'h1'} className={classes.titulo}>Check-In</Typography>
+                                <Typography className={classes.subtitulo}>Hace check-in en los mejores hoteles del
+                                    mundo, al mejor precio</Typography>
+                                <Buscador isHome={true}/>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </MuiPickersUtilsProvider>
+            );
+        } else return null;
     }
 
     render() {
-        const {classes} = this.props;
-        return (
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <div className={classes.root}>
-                    <Grid container direction={'row'} className={'background-container container-fluid'}
-                          align="center"
-                          justify="center">
-                        <Grid item direction={'column'}>
-                            <Typography variant={'h1'} className={classes.titulo}>Check-In</Typography>
-                            <Typography className={classes.subtitulo}>Hace check-in en los mejores hoteles del
-                                mundo, al mejor precio</Typography>
-                            <Buscador isHome={true}/>
-                        </Grid>
-                    </Grid>
-                </div>
-            </MuiPickersUtilsProvider>
-        );
+        return this.conditionalRender();
     }
 }
 

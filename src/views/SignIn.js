@@ -14,6 +14,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ErrorBox from "../components/ErrorBox";
 import {parse} from "query-string";
 import {Redirect} from "react-router-dom";
+import CheckinUserApi from "../api/CheckinUserApi";
+import NavBar from "../components/NavBar";
 
 const useStyles = theme => ({
     paper: {
@@ -40,7 +42,9 @@ class SignIn extends React.Component {
         super(props);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.state = this.props.location.state;
+        this.userApi = new CheckinUserApi();
+        this.state = this.props.location.state || {};
+        this.state.logged = !!cookie.load('token');
 
         this.conditionalRender = this.conditionalRender.bind(this);
     }
@@ -55,17 +59,7 @@ class SignIn extends React.Component {
             username: this.state.username,
             password: this.state.password
         }
-        fetch('http://localhost:3200/auth/login', {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify(request),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => {
-            if (res.ok) return res.json();
-            else throw Error(res.json().statusText);
-        })
+        this.userApi.login(request)
             .then(data => {
                 cookie.save('token', data.accessToken);
                 this.setState({logged: true});
@@ -78,14 +72,14 @@ class SignIn extends React.Component {
         if (this.state.logged) {
             if (this.state.action) {
                 return (<Redirect to={{
-                    pathname: 'Reservation',
+                    pathname: this.state.action,
                     state: this.state
                 }}/>);
             } else {
-                return (<Redirect to={'/'}/>)
+                return (<Redirect to={{pathname: '/'}}/>)
             }
         } else {
-            return (<Container component="main" maxWidth="xs">
+            return (<span><NavBar/><Container component="main" maxWidth="xs">
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
                         <AccountCircleIcon/>
@@ -135,7 +129,7 @@ class SignIn extends React.Component {
                 <Box mt={8}>
                     <Copyright/>
                 </Box>
-            </Container>);
+            </Container></span>);
         }
     }
 

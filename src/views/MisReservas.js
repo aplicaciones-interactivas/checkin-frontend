@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Price from '../components/Price';
 import PropTypes from "prop-types";
+import NavBar from "../components/NavBar";
 
 const styles = theme => ({
     infoText: {}
@@ -22,6 +23,7 @@ class MisReservas extends React.Component {
         const reservas = [{}, {}]
         return (
             <div>
+                <NavBar/>
                 <Typography variant="h3">
                     Mis Reservas
                 </Typography>

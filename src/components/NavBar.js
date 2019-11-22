@@ -32,8 +32,8 @@ class NavBar extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
-        return (<AppBar position="static">
+        const {classes, className} = this.props;
+        return (<AppBar position="fixed" className={className}>
             <div>{classes.title.flexGrow}</div>
             <Toolbar>
                 <Typography variant="h6" className={classes.title}>

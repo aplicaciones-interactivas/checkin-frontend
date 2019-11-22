@@ -10,6 +10,7 @@ import Hotels from "./views/Hotels";
 import Reservation from "./views/Reservation";
 import HotelInfo from "./views/HotelInfo";
 import MisReservas from "./views/MisReservas";
+import Administration from "./views/abm/Administration";
 
 Array.prototype.remove = function (element) {
     var index = this.indexOf(element);
@@ -18,21 +19,32 @@ Array.prototype.remove = function (element) {
     }
 }
 
-function App() {
-    return (
-        <Router>
-            <div className={"principal"}>
-                <NavBar/>
-                <Route path="/Hotels" exact strict component={Hotels}/>
-                <Route path="/" exact strict component={Home}/>
-                <Route path="/SignIn" exact strict component={SignIn}/>
-                <Route path="/SignUp" exact strict component={SignUp}/>
-                <Route path={"/Reservation"} component={Reservation}/>
-                <Route path="/HotelInfo/:hotelId" component={HotelInfo}/>
-                <Route path="/Reservations" exact strict component={MisReservas}/>
-            </div>
-        </Router>
-    );
-}
+export default class App extends React.Component {
 
-export default App;
+    constructor(props) {
+        super(props);
+        this.state = {};
+        this.updateUser = this.updateUser.bind(this);
+    }
+
+    updateUser(user) {
+        this.setState({user: user});
+    }
+
+    render() {
+        return (
+            <Router>
+                <div className={"principal"}>
+                    <Route path="/Hotels" exact strict component={Hotels}/>
+                    <Route path="/" exact strict component={Home}/>
+                    <Route path="/SignIn" exact strict component={SignIn}/>
+                    <Route path="/SignUp" exact strict component={SignUp}/>
+                    <Route path={"/Reservation"} component={Reservation}/>
+                    <Route path="/HotelInfo/:hotelId" component={HotelInfo}/>
+                    <Route path="/Reservations" exact strict component={MisReservas}/>
+                    <Route path="/Administration" exact strict component={Administration}/>
+                </div>
+            </Router>
+        );
+    }
+}

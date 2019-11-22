@@ -2,7 +2,6 @@ import React from 'react';
 import HotelImage from '../components/HotelImage';
 import Grid from "@material-ui/core/Grid";
 import {CheckinHotelApi} from "../api/CheckinHotelApi";
-import {parse} from 'query-string';
 import {withStyles} from '@material-ui/styles';
 import {AmenityList} from "../components/AmenityList";
 import Rating from "@material-ui/lab/Rating";
@@ -13,6 +12,7 @@ import HotelNameLocation from "../components/HotelNameLocation";
 import CheckinPlacesApi from "../api/CheckinPlacesApi";
 import Box from "@material-ui/core/Box";
 import CheckInRoomTypeApi from "../api/CheckInRoomTypeApi";
+import NavBar from "../components/NavBar";
 
 
 const styles = theme => ({
@@ -53,7 +53,7 @@ class HotelInfo extends React.Component {
     render() {
         if (this.state.hotel && this.state.country && this.state.roomTypes) {
             const {classes} = this.props;
-            return (
+            return (<span><NavBar/>
                 <Grid container xs={12} align={'center'} justify={'center'}>
                     <Grid item direction="column" xs={10}>
 
@@ -72,14 +72,20 @@ class HotelInfo extends React.Component {
                                 </Grid>
                                 <Box mt={2}>
                                     <Grid item xs={12}>
-                                        <Typography variant={'h6'}>Comodidades</Typography>
+                                        <Typography variant={'h5'}>Comodidades</Typography>
                                         <AmenityList withNames={true} showDescription={true}
                                                      amenities={this.state.hotel ? this.state.hotel.amenities : []}/>
                                     </Grid>
                                 </Box>
                                 <Box mt={2}>
+                                    <Typography variant={'h5'}>Contacto</Typography>
+                                    <Grid item xs={12}>
+                                        <Typography>{this.state.hotel.contactEmail}</Typography>
+                                    </Grid>
+                                </Box>
+                                <Box mt={2}>
                                     <Grid item>
-                                        <Typography variant={'h6'}>Habitaciones</Typography>
+                                        <Typography variant={'h5'}>Habitaciones</Typography>
                                         <RoomList roomTypes={this.state.roomTypes} from={this.state.search.from}
                                                   until={this.state.search.until}
                                                   occupancy={this.state.search.occupancy}/>
@@ -91,6 +97,7 @@ class HotelInfo extends React.Component {
                     </Grid>
 
                 </Grid>
+                </span>
             )
         } else return null;
     }

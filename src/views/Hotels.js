@@ -6,6 +6,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import {CheckinHotelApi} from "../api/CheckinHotelApi";
 import HotelsList from "../components/HotelsList";
+import NavBar from "../components/NavBar";
 
 export default class Hotels extends React.Component {
 
@@ -21,19 +22,21 @@ export default class Hotels extends React.Component {
     }
 
     render() {
-        return (<MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <div>
-                <Grid container>
-                    <Grid container direction={'column'} xs={12} lg={3}>
-                        <Buscador isHome={false} initialData={this.state.search}/>
-                    </Grid>
-                    <Grid container xs={12} lg={9}>
-                        <Grid item xs={12}>
-                            <HotelsList hotels={this.state.hotels} search={this.state.search}/>
+        return (
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <NavBar/>
+                <div>
+                    <Grid container>
+                        <Grid container direction={'column'} xs={12} lg={3}>
+                            <Buscador isHome={false} initialData={this.state.search}/>
+                        </Grid>
+                        <Grid container xs={12} lg={9}>
+                            <Grid item xs={12}>
+                                <HotelsList hotels={this.state.hotels} search={this.state.search}/>
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-            </div>
-        </MuiPickersUtilsProvider>);
+                </div>
+            </MuiPickersUtilsProvider>);
     }
 }
