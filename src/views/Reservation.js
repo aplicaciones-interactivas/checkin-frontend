@@ -27,7 +27,11 @@ const styles = theme => ({
 
     datepicker: {
         marginLeft: '1%'
-    }
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(8, 0, 0, 0),
+    },
 
 });
 
@@ -117,13 +121,13 @@ class Reservation extends React.Component {
                     }}/>)
             } else if (this.state.hotel && this.state.mealPlans && this.state.roomType && this.state.totalPrice && this.state.country) {
                 return (<Grid container direction={'row'}>
-                    <Grid item xs={12} md={2}>
+                    <Grid item xs={12} md={5}>
                         <Box pl={2}>
                             <HotelImage isGrid={true}
                                         images={this.state.hotel ? this.state.hotel.__hotelImages__ : []}/>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} md={10}>
+                    <Grid item xs={12} md={7}>
                         <Box pl={2}>
                             <Grid item xs={12}>
                                 <HotelNameLocation hotel={this.state.hotel} country={this.state.country}/>
@@ -219,18 +223,20 @@ class Reservation extends React.Component {
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <NavBar/>
-                <Grid align={'center'} justify={'center'} container direction={'row'}>
-                    <Grid item direction={'column'} xs={11} align={'left'} justify={'left'}>
-                        <br/>
-                        <Card>
-                            <CardContent>
-                                {
-                                    this.conditionalRender()
-                                }
-                            </CardContent>
-                        </Card>
+                <main className={classes.content}>
+                    <Grid align={'center'} justify={'center'} container direction={'row'}>
+                        <Grid item direction={'column'} xs={11} align={'left'} justify={'left'}>
+                            <br/>
+                            <Card>
+                                <CardContent>
+                                    {
+                                        this.conditionalRender()
+                                    }
+                                </CardContent>
+                            </Card>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </main>
             </MuiPickersUtilsProvider>
         )
     }

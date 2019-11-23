@@ -45,7 +45,11 @@ const styles = theme => ({
         padding: '10px 10px 15px 10px',
         margin: '10px 0px 0px 0px',
         maxWidth: '810px'
-    }
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3,0,0,0),
+    },
 });
 
 class Home extends React.Component {
@@ -73,18 +77,20 @@ class Home extends React.Component {
             return (
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <NavBar/>
-                    <div className={classes.root}>
-                        <Grid container direction={'row'} className={'background-container container-fluid'}
-                              align="center"
-                              justify="center">
-                            <Grid item direction={'column'}>
-                                <Typography variant={'h1'} className={classes.titulo}>Check-In</Typography>
-                                <Typography className={classes.subtitulo}>Hace check-in en los mejores hoteles del
-                                    mundo, al mejor precio</Typography>
-                                <Buscador isHome={true}/>
+                    <main className={classes.content}>
+                        <div className={classes.root}>
+                            <Grid container direction={'row'} className={'background-container container-fluid'}
+                                  align="center"
+                                  justify="center">
+                                <Grid item direction={'column'}>
+                                    <Typography variant={'h1'} className={classes.titulo}>Check-In</Typography>
+                                    <Typography className={classes.subtitulo}>Hace check-in en los mejores hoteles del
+                                        mundo, al mejor precio</Typography>
+                                    <Buscador isHome={true}/>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </div>
+                        </div>
+                    </main>
                 </MuiPickersUtilsProvider>
             );
         } else return null;

@@ -24,6 +24,12 @@ export class CheckinReservationApi {
         }).then(res => res.json())
     }
 
+    cancel(reservationId) {
+        return fetch(`${constants.SERVER_HOST}/reservation/${reservationId}`, {
+            method: 'DELETE'
+        });
+    }
+
     /*
     Para usarlo en la clase que lo invocas tenes que importar:
         import cookie from 'react-cookies'

@@ -7,8 +7,20 @@ import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import {CheckinHotelApi} from "../api/CheckinHotelApi";
 import HotelsList from "../components/HotelsList";
 import NavBar from "../components/NavBar";
+import PropTypes from "prop-types";
+import {withStyles} from "@material-ui/core";
 
-export default class Hotels extends React.Component {
+const styles = theme => ({
+    deleteButton: {
+        backgroundColor: 'red'
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(10, 0, 0, 0),
+    },
+});
+
+class Hotels extends React.Component {
 
     constructor(props) {
         super(props);
@@ -22,21 +34,30 @@ export default class Hotels extends React.Component {
     }
 
     render() {
+        const {classes} = this.props;
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <NavBar/>
-                <div>
-                    <Grid container>
-                        <Grid container direction={'column'} xs={12} lg={3}>
-                            <Buscador isHome={false} initialData={this.state.search}/>
-                        </Grid>
-                        <Grid container xs={12} lg={9}>
-                            <Grid item xs={12}>
-                                <HotelsList hotels={this.state.hotels} search={this.state.search}/>
+                <main className={classes.content}>
+                    <div>
+                        <Grid container>
+                            <Grid container direction={'column'} xs={12} lg={3}>
+                                <Buscador isHome={false} initialData={this.state.search}/>
+                            </Grid>
+                            <Grid container xs={12} lg={9}>
+                                <Grid item xs={12}>
+                                    <HotelsList hotels={this.state.hotels} search={this.state.search}/>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                </div>
+                    </div>
+                </main>
             </MuiPickersUtilsProvider>);
     }
 }
+
+Hotels.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Hotels);

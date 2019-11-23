@@ -31,7 +31,11 @@ const useStyles = theme => ({
     error: {
         backgroundColor: theme.palette.error.light,
         padding: theme.spacing(3, 2)
-    }
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(8, 0, 0, 0),
+    },
 });
 
 class SignUp extends React.Component {
@@ -68,7 +72,6 @@ class SignUp extends React.Component {
             else throw Error(res.json().statusText);
         })
             .then(data => {
-                cookie.save('token', data.accessToken);
                 window.location.pathname = '/Signin';
             })
             .catch(err => this.setState({error: 'Revisa los datos ingresados'}));
@@ -76,7 +79,9 @@ class SignUp extends React.Component {
 
     render() {
         const {classes} = this.props;
-        return (<span><NavBar/><Container component="main" maxWidth="xs">
+        return (<span><NavBar/>
+        <main className={classes.content}>
+        <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
                     <AccountCircleIcon/>
@@ -101,9 +106,9 @@ class SignUp extends React.Component {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="lastName"
+                                id="lastname"
                                 label="Apellido"
-                                name="lastName"
+                                name="lastname"
                                 autoComplete="lname"
                             />
                         </Grid>
@@ -173,7 +178,9 @@ class SignUp extends React.Component {
             <Box mt={8}>
                 <Copyright/>
             </Box>
-        </Container></span>);
+        </Container>
+        </main>
+        </span>);
     }
 }
 

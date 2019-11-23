@@ -2,12 +2,11 @@ import React from 'react';
 import HotelImage from '../components/HotelImage';
 import Grid from "@material-ui/core/Grid";
 import {CheckinHotelApi} from "../api/CheckinHotelApi";
-import {withStyles} from '@material-ui/styles';
 import {AmenityList} from "../components/AmenityList";
 import Rating from "@material-ui/lab/Rating";
 import PropTypes from "prop-types";
 import RoomList from '../components/Table';
-import {Card, Typography} from "@material-ui/core";
+import {Card, Typography, withStyles} from "@material-ui/core";
 import HotelNameLocation from "../components/HotelNameLocation";
 import CheckinPlacesApi from "../api/CheckinPlacesApi";
 import Box from "@material-ui/core/Box";
@@ -18,7 +17,11 @@ import NavBar from "../components/NavBar";
 const styles = theme => ({
     fullWidth: {
         width: '100%'
-    }
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(12, 0, 0, 0),
+    },
 });
 
 class HotelInfo extends React.Component {
@@ -54,6 +57,7 @@ class HotelInfo extends React.Component {
         if (this.state.hotel && this.state.country && this.state.roomTypes) {
             const {classes} = this.props;
             return (<span><NavBar/>
+            <main className={classes.content}>
                 <Grid container xs={12} align={'center'} justify={'center'}>
                     <Grid item direction="column" xs={10}>
 
@@ -97,6 +101,7 @@ class HotelInfo extends React.Component {
                     </Grid>
 
                 </Grid>
+            </main>
                 </span>
             )
         } else return null;

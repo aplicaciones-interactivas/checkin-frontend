@@ -6,11 +6,11 @@ import Route from 'react-router-dom/Route';
 import SignIn from './views/SignIn';
 import SignUp from './views/SignUp';
 import NavBar from "./components/NavBar";
-import Hotels from "./views/Hotels";
 import Reservation from "./views/Reservation";
 import HotelInfo from "./views/HotelInfo";
-import MisReservas from "./views/MisReservas";
+import MisReservas from "./views/Reservations";
 import Administration from "./views/abm/Administration";
+import Hotels from "./views/Hotels";
 
 Array.prototype.remove = function (element) {
     var index = this.indexOf(element);

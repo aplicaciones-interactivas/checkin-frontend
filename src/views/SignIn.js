@@ -34,7 +34,11 @@ const useStyles = theme => ({
     error: {
         backgroundColor: theme.palette.error.light,
         padding: theme.spacing(3, 2)
-    }
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(12, 0, 0, 0),
+    },
 });
 
 class SignIn extends React.Component {
@@ -135,11 +139,13 @@ class SignIn extends React.Component {
 
 
     render() {
-
+        const {classes} = this.props;
         return (<span>
-            {
-                this.conditionalRender()
-            }
+            <main className={classes.content}>
+                {
+                    this.conditionalRender()
+                }
+            </main>
         </span>);
     }
 }
