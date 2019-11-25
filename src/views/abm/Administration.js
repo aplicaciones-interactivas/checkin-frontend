@@ -12,7 +12,11 @@ import PropTypes from "prop-types";
 import {Box, withStyles} from "@material-ui/core";
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import RoomIcon from '@material-ui/icons/Room';
-import HotelList from "./hotels/HotelList";
+import HotelList from "./subviews/HotelList";
+import RoomTypeList from "./subviews/RoomTypeList";
+import FastfoodIcon from '@material-ui/icons/Fastfood';
+import {MealPlanTable} from "../../components/MealPlanTable";
+import MealPlanList from "./subviews/MealPlans";
 
 const styles = (theme) => ({
     root: {
@@ -52,9 +56,9 @@ class Administration extends React.Component {
         if (this.state.view === 'hotels') {
             return (<HotelList/>)
         } else if (this.state.view === 'roomTypes') {
-            return null;
-        } else if (this.state.view === 'rooms') {
-            return null;
+            return (<RoomTypeList/>);
+        } else if (this.state.view === 'mealPlans') {
+            return (<MealPlanList/>);
         } else {
             return null;
         }
@@ -84,9 +88,9 @@ class Administration extends React.Component {
                             <ListItemIcon><MeetingRoomIcon/></ListItemIcon>
                             <ListItemText primary={'Tipos de habitacion'}/>
                         </ListItem>
-                        <ListItem button key={"rooms"} onClick={() => this.onClickOption('rooms')}>
-                            <ListItemIcon><RoomIcon/></ListItemIcon>
-                            <ListItemText primary={'Habitaciones'}/>
+                        <ListItem button key={"rooms"} onClick={() => this.onClickOption('mealPlans')}>
+                            <ListItemIcon><FastfoodIcon/></ListItemIcon>
+                            <ListItemText primary={'Planes de comida'}/>
                         </ListItem>
                     </List>
                 </Drawer>

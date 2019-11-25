@@ -12,4 +12,12 @@ export default class CheckInRoomTypeApi {
             .then(res => res.json());
     }
 
+    findByUser(token) {
+        return fetch(`${constants.SERVER_HOST}/room-type/`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(res => res.json());
+    }
 }
