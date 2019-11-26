@@ -17,6 +17,8 @@ import RoomTypeList from "./subviews/RoomTypeList";
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import MealPlanForm from './subviews/modals/MealPlanForm';
 import MealPlanList from "./subviews/MealPlansList";
+import ReservationsList from "./subviews/ReservationsList";
+import BookIcon from '@material-ui/icons/Book';
 
 const styles = (theme) => ({
     root: {
@@ -56,6 +58,8 @@ class Administration extends React.Component {
             return (<MealPlanList/>);
         } else if (this.state.view === 'addMealPlan') {
             return (<MealPlanForm/>)
+        } else if (this.state.view === 'reservations') {
+            return (<ReservationsList/>)
         } else {
             return null;
         }
@@ -100,6 +104,12 @@ class Administration extends React.Component {
                         })}>
                             <ListItemIcon><FastfoodIcon/></ListItemIcon>
                             <ListItemText primary={'Planes de comida'}/>
+                        </ListItem>
+                        <ListItem button key={"reservations"} onClick={() => this.props.history.push('/Administration', {
+                            view: 'reservations'
+                        })}>
+                            <ListItemIcon><BookIcon/></ListItemIcon>
+                            <ListItemText primary={'Reservas'}/>
                         </ListItem>
                     </List>
                 </Drawer>

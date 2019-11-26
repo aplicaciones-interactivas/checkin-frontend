@@ -17,6 +17,7 @@ import Rating from "@material-ui/lab/Rating";
 import {AmenityList} from "../components/AmenityList";
 import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import da from "moment/locale/da";
 
 const styles = theme => ({
     content: {
@@ -51,14 +52,21 @@ class Reservations extends React.Component {
     componentDidMount() {
         this.reservationApi.myReservations(cookie.load('token'))
             .then(data => {
-                data = data.map(reservation => {
-                        return this.placesApi.getCountryByCode(reservation.room.roomType.hotel.country).then(countryInfo => {
-                            reservation.room.roomType.hotel.country = countryInfo.translations.es;
-                            return reservation;
-                        });
-                    }
-                )
-                return Promise.all(data);
+                const countries = {};
+                data.forEach(reservation => {
+                    if (!countries[reservation.room.roomType.hotel.country])
+                        countries[reservation.room.roomType.hotel.country] = this.placesApi.getCountryByCode(reservation.room.roomType.hotel.country);
+                });
+                return Promise.all(Object.values(countries)).then(countriesRes => {
+                    Object.keys(countries).forEach((e, i) => {
+                        countries[e] = countriesRes[i].translations.es;
+                    })
+                    return data.map((reservation) => {
+                        reservation.room.roomType.hotel.country = countries[reservation.room.roomType.hotel.country];
+                        return reservation;
+                    });
+
+                });
             }).then(data => this.setState({reservations: data}));
     }
 
@@ -125,6 +133,18 @@ class Reservations extends React.Component {
                                                     />
                                                 </Grid>
                                             </Grid>
+                                            {
+                                                (() => {
+                                                    if (reservation.hotelMealPlan && reservation.hotelMealPlan.mealPlan) {
+                                                        return (<Grid container xs={12}>
+                                                            <Box>
+                                                                Plan de
+                                                                comidas: {reservation.hotelMealPlan.mealPlan.name}
+                                                            </Box>
+                                                        </Grid>)
+                                                    } else return null
+                                                })()
+                                            }
                                         </Grid>
                                     </Grid>
                                     <Grid container xs={12} lg={2} align="center" justify="center" alignItems={"center"}

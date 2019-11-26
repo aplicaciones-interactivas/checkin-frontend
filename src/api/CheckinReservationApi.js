@@ -30,15 +30,17 @@ export class CheckinReservationApi {
         });
     }
 
-    /*
-    Para usarlo en la clase que lo invocas tenes que importar:
-        import cookie from 'react-cookies'
-
-       y luego hacer cookie.load('token'), lo que te devuelve eso, es lo que le pasas a myReservations... pullea el backend
-     */
-
     myReservations(token) {
         return fetch(`${constants.SERVER_HOST}/reservation/me`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json())
+    }
+
+    findByHotelId(hotelId, token) {
+        return fetch(`${constants.SERVER_HOST}/reservation/byHotelId/${hotelId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
