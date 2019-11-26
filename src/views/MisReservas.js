@@ -8,7 +8,14 @@ import Price from '../components/Price';
 import PropTypes from "prop-types";
 
 const styles = theme => ({
-    infoText: {}
+    card: {
+        margin: '25px'
+    },
+    paddingTypography: {
+        [theme.breakpoints.up('lg')]: {
+            paddingLeft: '5px'
+        }
+    }
 });
 
 
@@ -19,7 +26,8 @@ class MisReservas extends React.Component {
     }
 
     render() {
-        const reservas = [{}, {}]
+        const reservas = [{}, {}, {}]
+        const {classes} = this.props;
         return (
             <div>
                 <Typography variant="h3">
@@ -29,21 +37,19 @@ class MisReservas extends React.Component {
                     <Grid container lg={10}>
                         {
                             reservas.map(reserva =>
-                                <Card>
+                                <Card className={classes.card}>
                                     <CardContent>
                                         <Grid container direction="row">
                                             <Grid container lg={5} justify="center" alignItems="flex-end">
-                                                <HotelImage isGrid={true} images={["", "", ""]}/>
+                                                <Grid item>
+                                                    <HotelImage isGrid={true} images={["", "", ""]}/>
+                                                </Grid>
                                             </Grid>
                                             <Grid container lg={5}>
-                                                <Grid item><Typography variant="h4">Hotel - Ciudad -
-                                                    País</Typography></Grid>
-                                                <Grid item><Typography variant="h5">Fecha Desde - Fecha
-                                                    Hasta</Typography></Grid>
-                                                <Grid item>
+                                                    <Typography variant="h4">Hotel - Ciudad - País</Typography>
+                                                    <Typography variant="h5">Fecha Desde - Fecha Hasta</Typography>
                                                     <Typography variant="h6">Tipo de Habitación</Typography>
                                                     <Price price={'12345'}/>
-                                                </Grid>
                                             </Grid>
                                             <Grid container lg={2} justify="center" alignItems="center">
                                                 <Grid item>

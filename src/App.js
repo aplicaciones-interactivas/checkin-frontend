@@ -10,6 +10,7 @@ import Hotels from "./views/Hotels";
 import Reservation from "./views/Reservation";
 import HotelInfo from "./views/HotelInfo";
 import MisReservas from "./views/MisReservas";
+import HotelABM from "./components/HotelABM"
 
 Array.prototype.remove = function (element) {
     var index = this.indexOf(element);
@@ -30,6 +31,7 @@ function App() {
                 <Route path={"/Reservation"} component={Reservation}/>
                 <Route path="/HotelInfo/:hotelId" component={HotelInfo}/>
                 <Route path="/Reservations" exact strict component={MisReservas}/>
+                <Route path="/CreateHotel" exact strict component={HotelABM}/>
             </div>
         </Router>
     );
