@@ -45,4 +45,26 @@ export class CheckinHotelApi {
             }
         });
     }
+
+    addMealPlan(id, req, token) {
+        return fetch(`${constants.SERVER_HOST}/hotel/${id}/mealPlan`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(req)
+        })
+    }
+
+    updateMealPlan(hotelId, mealPlanId, req, token) {
+        return fetch(`${constants.SERVER_HOST}/hotel/${hotelId}/mealPlan/${mealPlanId}`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(req)
+        })
+    }
 }

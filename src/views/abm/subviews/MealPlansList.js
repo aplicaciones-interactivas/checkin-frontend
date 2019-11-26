@@ -1,26 +1,21 @@
 import React from 'react';
-import {CheckinHotelApi} from "../../../api/CheckinHotelApi";
 import cookie from 'react-cookies';
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
-import Price from "../../../components/Price";
-import {Link, withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
-import NavBar from "../../../components/NavBar";
 import Fab from "@material-ui/core/Fab";
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
-import CheckinPlacesApi from "../../../api/CheckinPlacesApi";
 import Grid from "@material-ui/core/Grid";
 import withConfirm from 'material-ui-confirm';
 import ErrorBox from "../../../components/ErrorBox";
 import {CheckinHotelMealPlanApi} from "../../../api/CheckinHotelMealPlanApi";
+import {withRouter} from "react-router-dom";
 
 
 const styles = (theme) => ({
@@ -38,7 +33,6 @@ class MealPlanList extends React.Component {
         this.onDelete = this.onDelete.bind(this);
     }
 
-
     componentDidMount() {
         this.getMealPlans();
     }
@@ -47,7 +41,6 @@ class MealPlanList extends React.Component {
         if (cookie.load('token')) {
             this.mealPlanApi.getByUser(cookie.load('token'))
                 .then(data => {
-                    console.log(data);
                     this.setState({mealPlans: data});
                 });
         }
@@ -61,32 +54,23 @@ class MealPlanList extends React.Component {
         return null;
     }
 
-    deleteItem(hotel) {
-        this.hotelApi.delete(hotel.id, cookie.load('token'))
-            .then(res => {
-                if (res.status == 500) {
-                    this.setState({deleteError: true})
-                } else {
-                    this.setState({deleteError: false})
-                }
-            });
-    }
-
     render() {
-        const {classes, confirm} = this.props;
-
         return (<span>
             {
                 this.onDelete()
             }
             <Grid xs={12}>
-                <Button fullWidth variant="contained" color="primary">Agregar</Button>
+                <Button fullWidth variant="contained" color="primary"
+                        onClick={() => this.props.history.push('/Administration', {
+                            view: 'addMealPlan'
+                        })}>Agregar</Button>
             </Grid>
              <Table size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="center">Nombre</TableCell>
                             <TableCell align="center">Hotel</TableCell>
+                            <TableCell align="center">Precio</TableCell>
                             <TableCell align="center">Acciones</TableCell>
                         </TableRow>
                     </TableHead>
@@ -95,12 +79,16 @@ class MealPlanList extends React.Component {
                             this.state.mealPlans.map(hotelMealPlan => <TableRow>
                                 <TableCell align="center">{hotelMealPlan.mealPlan.name}</TableCell>
                                 <TableCell align="center">{hotelMealPlan.hotel.name}</TableCell>
+                                <TableCell align="center">{hotelMealPlan.additionalPrice}</TableCell>
                                 <TableCell align="center">
-                                    <Fab size="small" aria-label="Add" color={'secondary'}>
-                                        <DeleteIcon/>
-                                    </Fab>
                                     <Fab size="small" aria-label="Add" color={'primary'}>
-                                        <EditIcon/>
+                                        <EditIcon onClick={() => {
+                                            this.props.history.push('/Administration', {
+                                                view: 'addMealPlan',
+                                                selectedMealPlanId: hotelMealPlan.id,
+                                                mode: 'update'
+                                            })
+                                        }}/>
                                     </Fab>
                                 </TableCell>
                             </TableRow>)
@@ -117,4 +105,4 @@ MealPlanList.propTypes = {
     confirm: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withConfirm(MealPlanList));
+export default withStyles(styles)(withRouter(withConfirm(MealPlanList)));

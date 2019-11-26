@@ -15,8 +15,8 @@ import RoomIcon from '@material-ui/icons/Room';
 import HotelList from "./subviews/HotelList";
 import RoomTypeList from "./subviews/RoomTypeList";
 import FastfoodIcon from '@material-ui/icons/Fastfood';
-import {MealPlanTable} from "../../components/MealPlanTable";
-import MealPlanList from "./subviews/MealPlans";
+import MealPlanForm from './subviews/modals/MealPlanForm';
+import MealPlanList from "./subviews/MealPlansList";
 
 const styles = (theme) => ({
     root: {
@@ -44,12 +44,7 @@ class Administration extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.onClickOption = this.onClickOption.bind(this);
         this.bodyRender = this.bodyRender.bind(this);
-    }
-
-    onClickOption(view) {
-        this.setState({view: view})
     }
 
     bodyRender() {
@@ -59,11 +54,19 @@ class Administration extends React.Component {
             return (<RoomTypeList/>);
         } else if (this.state.view === 'mealPlans') {
             return (<MealPlanList/>);
+        } else if (this.state.view === 'addMealPlan') {
+            return (<MealPlanForm/>)
         } else {
             return null;
         }
     }
 
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.history.action === 'PUSH' && this.state.view !== this.props.location.state.view) {
+            this.setState({view: this.props.location.state.view});
+        }
+    }
 
     render() {
         const {classes} = this.props;
@@ -80,15 +83,21 @@ class Administration extends React.Component {
                 >
                     <div className={classes.toolbar}/>
                     <List>
-                        <ListItem button key={"hotels"} onClick={() => this.onClickOption('hotels')}>
+                        <ListItem button key={"hotels"} onClick={() => this.props.history.push('/Administration', {
+                            view: 'hotels'
+                        })}>
                             <ListItemIcon><ApartmentIcon/></ListItemIcon>
                             <ListItemText primary={'Hoteles'}/>
                         </ListItem>
-                        <ListItem button key={"roomTypes"} onClick={() => this.onClickOption('roomTypes')}>
+                        <ListItem button key={"roomTypes"} onClick={() => this.props.history.push('/Administration', {
+                            view: 'roomTypes'
+                        })}>
                             <ListItemIcon><MeetingRoomIcon/></ListItemIcon>
                             <ListItemText primary={'Tipos de habitacion'}/>
                         </ListItem>
-                        <ListItem button key={"rooms"} onClick={() => this.onClickOption('mealPlans')}>
+                        <ListItem button key={"rooms"} onClick={() => this.props.history.push('/Administration', {
+                            view: 'mealPlans'
+                        })}>
                             <ListItemIcon><FastfoodIcon/></ListItemIcon>
                             <ListItemText primary={'Planes de comida'}/>
                         </ListItem>
