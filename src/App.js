@@ -6,6 +6,7 @@ import Route from 'react-router-dom/Route';
 import SignIn from './views/SignIn';
 import SignUp from './views/SignUp';
 import NavBar from "./components/NavBar";
+import Hotels from "./views/Hotels";
 import Reservation from "./views/Reservation";
 import HotelInfo from "./views/HotelInfo";
 import MisReservas from "./views/Reservations";
@@ -48,3 +49,5 @@ export default class App extends React.Component {
         );
     }
 }
+
+export default App;
