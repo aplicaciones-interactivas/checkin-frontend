@@ -15,10 +15,11 @@ import RoomIcon from '@material-ui/icons/Room';
 import HotelList from "./subviews/HotelList";
 import RoomTypeList from "./subviews/RoomTypeList";
 import FastfoodIcon from '@material-ui/icons/Fastfood';
-import MealPlanForm from './subviews/modals/MealPlanForm';
+import MealPlanForm from '../../components/MealPlanForm';
 import MealPlanList from "./subviews/MealPlansList";
 import ReservationsList from "./subviews/ReservationsList";
 import BookIcon from '@material-ui/icons/Book';
+import RoomTypeForm from "../../components/RoomTypeForm";
 
 const styles = (theme) => ({
     root: {
@@ -56,10 +57,12 @@ class Administration extends React.Component {
             return (<RoomTypeList/>);
         } else if (this.state.view === 'mealPlans') {
             return (<MealPlanList/>);
-        } else if (this.state.view === 'addMealPlan') {
+        } else if (this.state.view === 'mealPlanForm') {
             return (<MealPlanForm/>)
         } else if (this.state.view === 'reservations') {
             return (<ReservationsList/>)
+        } else if (this.state.view === 'roomTypeForm') {
+            return (<RoomTypeForm/>)
         } else {
             return null;
         }
@@ -105,9 +108,10 @@ class Administration extends React.Component {
                             <ListItemIcon><FastfoodIcon/></ListItemIcon>
                             <ListItemText primary={'Planes de comida'}/>
                         </ListItem>
-                        <ListItem button key={"reservations"} onClick={() => this.props.history.push('/Administration', {
-                            view: 'reservations'
-                        })}>
+                        <ListItem button key={"reservations"}
+                                  onClick={() => this.props.history.push('/Administration', {
+                                      view: 'reservations'
+                                  })}>
                             <ListItemIcon><BookIcon/></ListItemIcon>
                             <ListItemText primary={'Reservas'}/>
                         </ListItem>

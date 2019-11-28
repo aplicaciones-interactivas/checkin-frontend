@@ -51,22 +51,7 @@ class RoomTypeList extends React.Component {
 
             this.roomTypeApi.findByUser(cookie.load('token'))
                 .then(roomTypes => {
-                    let groupedRoomTypes = roomTypes.reduce((sum, a) => {
-                        if (!sum[a.hotel.id]) {
-                            sum[a.hotel.id] = []
-                        }
-                        sum[a.hotel.id].push(a);
-                        return sum;
-                    }, {});
-                    console.log(groupedRoomTypes);
-                    groupedRoomTypes = Object.keys(groupedRoomTypes).reduce((sum, a) => {
-                        sum.push(groupedRoomTypes[a]);
-                        return sum;
-                    }, []);
-
-                    console.log(groupedRoomTypes);
-
-                    this.setState({groupedRoomTypes: groupedRoomTypes});
+                    this.setState({groupedRoomTypes: roomTypes});
                 });
         }
     }
@@ -98,7 +83,10 @@ class RoomTypeList extends React.Component {
                 this.onDelete()
             }
             <Grid xs={12}>
-                <Button fullWidth variant="contained" color="primary">Agregar</Button>
+                <Button fullWidth variant="contained" color="primary"
+                        onClick={() => this.props.history.push('/Administration', {
+                            view: 'roomTypeForm'
+                        })}>Agregar</Button>
             </Grid>
              <Table size="small" aria-label="a dense table">
                     <TableHead>
@@ -109,14 +97,14 @@ class RoomTypeList extends React.Component {
                             <TableCell align="center">Visitantes</TableCell>
                             <TableCell align="center">Habitacion</TableCell>
                             <TableCell align="center">Hotel</TableCell>
-                            <TableCell align="center">Precios</TableCell>
+                            <TableCell align="center">Precio</TableCell>
                             <TableCell align="center">Acciones</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {
-                            this.state.groupedRoomTypes.map(roomTypes => {
-                                return roomTypes.map(roomType => {
+                            this.state.groupedRoomTypes.map(roomType => {
+
                                     return <TableRow>
                                         <TableCell align="center">{roomType.type}</TableCell>
                                         <TableCell align="center">{roomType.maxOcupancy}</TableCell>
@@ -126,23 +114,20 @@ class RoomTypeList extends React.Component {
                                         <TableCell align="center">{roomType.hotel.name}</TableCell>
                                         <TableCell align="center">{roomType.price}</TableCell>
                                         <TableCell align="center">
-                                            <Fab size="small" aria-label="Add" color={'secondary'}
-                                                 onClick={confirm(() => this.deleteItem(roomType), {
-                                                     description: `Se borrara permanentemente ${roomType.name}.`,
-                                                     title: "¿Estás seguro?"
-                                                 })}>
-                                                <DeleteIcon/>
-                                            </Fab>
-                                            <Fab size="small" aria-label="Add" color={'primary'}>
+                                            <Fab size="small" aria-label="Add" color={'primary'} onClick={() => {
+                                                this.props.history.push('/Administration', {
+                                                    view: 'roomTypeForm',
+                                                    roomTypeId: roomType.id,
+                                                    hotelId: roomType.hotelId,
+                                                    mode: 'update'
+                                                })
+                                            }}>
                                                 <EditIcon/>
                                             </Fab>
                                         </TableCell>
                                     </TableRow>
-                                })
-                            })
-
-
-
+                                }
+                            )
                         }
                     </TableBody>
                 </Table>
@@ -156,4 +141,4 @@ RoomTypeList.propTypes = {
     confirm: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withConfirm(RoomTypeList));
+export default withStyles(styles)(withRouter(withConfirm(RoomTypeList)));

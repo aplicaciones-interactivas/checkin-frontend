@@ -133,6 +133,9 @@ class Reservations extends React.Component {
                                                     />
                                                 </Grid>
                                             </Grid>
+                                            <Grid item xs={12} lg={12}>
+                                                Codigo de tu reserva: {reservation.id}
+                                            </Grid>
                                             {
                                                 (() => {
                                                     if (reservation.hotelMealPlan && reservation.hotelMealPlan.mealPlan) {

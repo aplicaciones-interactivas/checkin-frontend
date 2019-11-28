@@ -20,4 +20,39 @@ export default class CheckInRoomTypeApi {
             }
         }).then(res => res.json());
     }
+
+    create(body, token) {
+        return fetch(`${constants.SERVER_HOST}/room-type`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+
+    }
+
+    update(id, body, token) {
+        return fetch(`${constants.SERVER_HOST}/room-type/${id}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+    }
+
+    addRooms(body, token) {
+        return fetch(`${constants.SERVER_HOST}/room`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+
+    }
 }

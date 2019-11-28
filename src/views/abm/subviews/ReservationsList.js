@@ -9,6 +9,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete/Autocomplete";
 import {CheckinHotelApi} from "../../../api/CheckinHotelApi";
 import {CheckinReservationApi} from "../../../api/CheckinReservationApi";
 import cookies from 'react-cookies';
+import moment from 'moment';
 
 const styles = (theme) => ({});
 
@@ -54,7 +55,17 @@ class ReservationsList extends React.Component {
                         columns={[
                             {title: 'Codigo de reserva', field: 'id'},
                             {title: 'Nombre', field: 'user.fullname'},
-                            {title: 'Habitacion', field: 'room.roomType.type'},
+                            {title: 'Habitacion', field: 'room.number'},
+                            {
+                                title: 'Desde', field: 'from', render: (data) => {
+                                    return moment(data.from).format("DD/MM/YYYY")
+                                }
+                            },
+                            {
+                                title: 'Hasta', field: 'until', render: (data) => {
+                                    return moment(data.until).format('DD/MM/YYYY');
+                                }
+                            },
                             {title: 'Plan de comidas', field: 'hotelMealPlan.mealPlan.name'},
                             {title: 'Precio', field: 'totalPrice'},
                         ]}

@@ -13,6 +13,7 @@
     "date-fns": "^2.5.1",
     "lodash": "latest",
     "material-table": "^1.54.1",
+    "material-ui-chip-input": "^2.0.0-beta.1",
     "material-ui-confirm": "1.0.0",
     "material-ui-flat-pagination": "^4.0.0",
     "material-ui-pagination": "^1.1.6",

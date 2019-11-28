@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import {CheckinHotelMealPlanApi} from "../../../../api/CheckinHotelMealPlanApi";
+import {CheckinHotelMealPlanApi} from "../api/CheckinHotelMealPlanApi";
 import Select from "react-select";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import {Typography, withStyles} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
-import {CheckinHotelApi} from "../../../../api/CheckinHotelApi";
+import {CheckinHotelApi} from "../api/CheckinHotelApi";
 import cookies from 'react-cookies';
 
 const styles = (theme) => ({

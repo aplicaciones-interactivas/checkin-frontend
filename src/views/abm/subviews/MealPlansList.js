@@ -61,7 +61,7 @@ class MealPlanList extends React.Component {
             <Grid xs={12}>
                 <Button fullWidth variant="contained" color="primary"
                         onClick={() => this.props.history.push('/Administration', {
-                            view: 'addMealPlan'
+                            view: 'mealPlanForm'
                         })}>Agregar</Button>
             </Grid>
              <Table size="small" aria-label="a dense table">
@@ -83,7 +83,7 @@ class MealPlanList extends React.Component {
                                     <Fab size="small" aria-label="Add" color={'primary'}>
                                         <EditIcon onClick={() => {
                                             this.props.history.push('/Administration', {
-                                                view: 'addMealPlan',
+                                                view: 'mealPlanForm',
                                                 selectedMealPlanId: hotelMealPlan.id,
                                                 mode: 'update'
                                             })
