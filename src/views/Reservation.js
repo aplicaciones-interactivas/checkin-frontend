@@ -181,18 +181,28 @@ class Reservation extends React.Component {
                             <Price price={this.state.totalPrice} notShowPerNigth={true}></Price>
                         </Box>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant={'h6'}>
-                            <Box pl={2} pt={2}>
-                                Podes agregar
-                            </Box>
-                        </Typography>
-                        <MealPlanTable mealPlans={this.state.mealPlans} from={this.state.search.from}
-                                       until={this.state.search.until}
-                                       roomTypeId={this.state.search.roomType.id}
-                                       onReservationFinish={this.resolveReservationResponse}
-                                       validateBeforeReserve={this.onReservation}></MealPlanTable>
-                    </Grid>
+                    {
+                        (() => {
+                            if (this.state.mealPlans && this.state.mealPlans.length !== 0) {
+                                return (
+                                    <Grid item xs={12}>
+                                        <Typography variant={'h6'}>
+                                            <Box pl={2} pt={2}>
+                                                Podes agregar
+                                            </Box>
+                                        </Typography>
+                                        <MealPlanTable mealPlans={this.state.mealPlans} from={this.state.search.from}
+                                                       until={this.state.search.until}
+                                                       roomTypeId={this.state.search.roomType.id}
+                                                       onReservationFinish={this.resolveReservationResponse}
+                                                       validateBeforeReserve={this.onReservation}/>
+                                    </Grid>)
+                            } else {
+                                return null;
+                            }
+                        })()
+                    }
+
                     <Grid item xs={12}>
                         <Typography variant={'h6'}>
                             <Box pl={2} pt={2}>

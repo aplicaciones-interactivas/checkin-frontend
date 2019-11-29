@@ -114,7 +114,8 @@ class HotelForm extends React.Component {
                 amenitiesId.forEach(id => this.state.originalAmenitiesId.push(id));
                 data.amenitiesId = amenitiesId;
                 const files = data.__hotelImages__.map(image => {
-                    return fetch(`${constants.SERVER_HOST}/${image.path}`).then(res => res.arrayBuffer().then(res => (`data:image/${image.path.split('.')[1]};base64,` + this._arrayBufferToBase64(res))));
+                    const splitedUrl =image.path.split('.');
+                    return fetch(`${image.path}`).then(res => res.arrayBuffer().then(res => (`data:image/${splitedUrl[splitedUrl.length-1]};base64,` + this._arrayBufferToBase64(res))));
                 });
                 this.setState({hotel: {...data, removedAmenitiesId: []}});
                 Promise.all(files).then(data => {

@@ -49,7 +49,7 @@ class HotelImage extends React.Component {
         } else {
             return images.map(image => {
                 return <CardMedia className={isGrid ? classes.mediaNoList : classes.media}
-                                  image={`${constants.SERVER_HOST}/${image.path}`}></CardMedia>
+                                  image={`${image.path}`}></CardMedia>
             })
         }
 
