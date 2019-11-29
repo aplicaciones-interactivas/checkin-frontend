@@ -13,6 +13,7 @@ import cookie from 'react-cookies'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ErrorBox from "../components/ErrorBox";
 import NavBar from "../components/NavBar";
+import CheckinUserApi from "../api/CheckinUserApi";
 
 const useStyles = theme => ({
     paper: {
@@ -43,6 +44,7 @@ class SignUp extends React.Component {
         super(props);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.apiUser = new CheckinUserApi();
         this.state = {};
 
     }
@@ -60,14 +62,7 @@ class SignUp extends React.Component {
             lastname: this.state.lastname,
             email: this.state.email
         }
-        fetch('http://localhost:3200/auth/signup', {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify(request),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => {
+        this.apiUser.signUp(request).then(res => {
             if (res.ok) return res.json();
             else throw Error(res.json().statusText);
         })
