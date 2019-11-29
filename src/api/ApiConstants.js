@@ -1,4 +1,4 @@
 const constants = {
-    SERVER_HOST: 'http://localhost:3200'
+    SERVER_HOST: 'https://checkin-backend-app.herokuapp.com'
 }
 export default constants;
