@@ -55,6 +55,7 @@ class ReservationsList extends React.Component {
                         columns={[
                             {title: 'Codigo de reserva', field: 'id'},
                             {title: 'Nombre', field: 'user.fullname'},
+                            {title: 'Email', field: 'user.email'},
                             {title: 'Habitacion', field: 'room.number'},
                             {
                                 title: 'Desde', field: 'from', render: (data) => {
@@ -67,7 +68,7 @@ class ReservationsList extends React.Component {
                                 }
                             },
                             {title: 'Plan de comidas', field: 'hotelMealPlan.mealPlan.name'},
-                            {title: 'Precio', field: 'totalPrice'},
+                            {title: 'Precio', field: 'totalPrice'}
                         ]}
                         localization={{
                             body: {
