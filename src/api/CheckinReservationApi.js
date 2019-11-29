@@ -24,9 +24,12 @@ export class CheckinReservationApi {
         }).then(res => res.json())
     }
 
-    cancel(reservationId) {
+    cancel(reservationId, token) {
         return fetch(`${constants.SERVER_HOST}/reservation/${reservationId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         });
     }
 

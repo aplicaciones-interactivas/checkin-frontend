@@ -17,7 +17,7 @@ import Rating from "@material-ui/lab/Rating";
 import {AmenityList} from "../components/AmenityList";
 import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import da from "moment/locale/da";
+import cookies from 'react-cookies';
 
 const styles = theme => ({
     content: {
@@ -71,7 +71,7 @@ class Reservations extends React.Component {
     }
 
     cancel(reservation, index) {
-        this.reservationApi.cancel(reservation.id)
+        this.reservationApi.cancel(reservation.id, cookies.load('token'))
             .then(res => {
                 const reservations = this.state.reservations;
                 reservations.remove(reservations[index])
