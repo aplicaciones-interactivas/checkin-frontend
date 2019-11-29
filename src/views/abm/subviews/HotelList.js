@@ -36,7 +36,6 @@ class HotelList extends React.Component {
         this.hotelApi = new CheckinHotelApi();
         this.placesApi = new CheckinPlacesApi();
         this.getHotels = this.getHotels.bind(this);
-        this.onDelete = this.onDelete.bind(this);
     }
 
 
@@ -46,49 +45,40 @@ class HotelList extends React.Component {
 
     getHotels() {
         if (cookie.load('token')) {
-            this.hotelApi.getByUser(cookie.load('token'))
+            return this.hotelApi.getByUser(cookie.load('token'))
                 .then(data => {
-                    return data.map(item => {
-                        return this.placesApi.getCountryByCode(item.country).then(countryInfo => {
-                            item.country = countryInfo.translations.es;
-                            return item;
-                        });
-
+                    const countries = {};
+                    data.forEach(hotel => {
+                        if (!countries[hotel.country])
+                            countries[hotel.country] = this.placesApi.getCountryByCode(hotel.country);
                     });
-                }).then(data => {
-                Promise.all(data).then(hotels => this.setState({hotels: hotels}))
-            });
+                    return Promise.all(Object.values(countries)).then(countriesRes => {
+                        Object.keys(countries).forEach((e, i) => {
+                            countries[e] = countriesRes[i].translations.es;
+                        })
+                        return countries
+                    }).then(countries => {
+                        data = data.map(hotel => {
+                            hotel.country = countries[hotel.country];
+                            return hotel;
+                        });
+                        return data;
+                    });
+                })
+                .then(data => this.setState({hotels: data}));
         }
-    }
-
-
-    onDelete(){
-        if (this.state.deleteError) {
-            return <ErrorBox message={'Ocurrio un error al borrar el hotel. Contacte con soporte'}/>
-        }
-        return null;
-    }
-
-    deleteItem(hotel) {
-        this.hotelApi.delete(hotel.id, cookie.load('token'))
-            .then(res => {
-                if (res.status == 500) {
-                    this.setState({deleteError: true})
-                } else {
-                    this.setState({deleteError: false})
-                }
-            });
     }
 
     render() {
         const {classes, confirm} = this.props;
 
         return (<span>
-            {
-               this.onDelete()
-            }
             <Grid xs={12}>
-                <Button fullWidth variant="contained" color="primary">Agregar</Button>
+                <Button fullWidth variant="contained" color="primary" onClick={() => {
+                    this.props.history.push('/Administration', {
+                        view: "hotelForm"
+                    })
+                }}>Agregar</Button>
             </Grid>
              <Table size="small" aria-label="a dense table">
                     <TableHead>
@@ -116,14 +106,13 @@ class HotelList extends React.Component {
                                 <TableCell align="center">{hotel.city}</TableCell>
                                 <TableCell align="center">{hotel.country}</TableCell>
                                 <TableCell align="center">
-                                    <Fab size="small" aria-label="Add" color={'secondary'}
-                                         onClick={confirm(() => this.deleteItem(hotel), {
-                                             description: `Se borrara permanentemente ${hotel.name}.`,
-                                             title: "¿Estás seguro?"
-                                         })}>
-                                        <DeleteIcon/>
-                                    </Fab>
-                                    <Fab size="small" aria-label="Add" color={'primary'}>
+                                    <Fab size="small" aria-label="Add" color={'primary'} onClick={() => {
+                                        this.props.history.push('/Administration', {
+                                            view: 'hotelForm',
+                                            hotelId: hotel.id,
+                                            mode: 'update'
+                                        })
+                                    }}>
                                         <EditIcon/>
                                     </Fab>
                                 </TableCell>
@@ -142,4 +131,4 @@ HotelList.propTypes = {
     confirm: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withConfirm(HotelList));
+export default withStyles(styles)(withRouter(HotelList));

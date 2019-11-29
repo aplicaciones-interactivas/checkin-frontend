@@ -132,7 +132,8 @@ class RoomTypeForm extends React.Component {
                                               value={this.state.roomType.type}/></Grid>
 
                 {
-                    this.renderIfNotUpdate(<Grid item xs={12}><TextField label='Ocupantes' variant="outlined" fullWidth
+                    this.renderIfNotUpdate(<Grid item xs={12}><TextField label='Ocupantes' type={'number'}
+                                                                         variant="outlined" fullWidth
                                                                          required
                                                                          onChange={(event) => this.setState({
                                                                              roomType: {
@@ -144,7 +145,8 @@ class RoomTypeForm extends React.Component {
 
 
                 {
-                    this.renderIfNotUpdate(<Grid item xs={12}><TextField label='Visitantes' variant="outlined" fullWidth
+                    this.renderIfNotUpdate(<Grid item xs={12}><TextField label='Visitantes' type={'number'}
+                                                                         variant="outlined" fullWidth
                                                                          required
                                                                          onChange={(event) => this.setState({
                                                                              roomType: {
@@ -156,7 +158,7 @@ class RoomTypeForm extends React.Component {
                 {
 
                     this.renderIfNotUpdate(<Grid item xs={12}>
-                        <TextField label='Area' variant="outlined" fullWidth required
+                        <TextField label='Area' variant="outlined" type={'number'} fullWidth required
                                    onChange={(event) => this.setState({
                                        roomType: {
                                            ...this.state.roomType,
@@ -167,7 +169,7 @@ class RoomTypeForm extends React.Component {
                     </Grid>)
                 }
                 <Grid item xs={12}>
-                    <TextField label='Precio' variant="outlined" fullWidth required
+                    <TextField label='Precio' variant="outlined" type={'number'} fullWidth required
                                onChange={(event) => this.setState({
                                    roomType: {
                                        ...this.state.roomType,

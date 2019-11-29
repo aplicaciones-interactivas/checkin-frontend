@@ -112,7 +112,7 @@ export default function GoogleMaps(props) {
                 <TextField
                     align={'left'} justify={'left'}
                     {...params}
-                    label="¿A donde vas?"
+                    label={props.message ? props.message : "¿A donde vas?"}
                     variant="outlined"
                     fullWidth
                     className={classes.whiteBackground}

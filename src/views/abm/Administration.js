@@ -20,6 +20,7 @@ import MealPlanList from "./subviews/MealPlansList";
 import ReservationsList from "./subviews/ReservationsList";
 import BookIcon from '@material-ui/icons/Book';
 import RoomTypeForm from "../../components/RoomTypeForm";
+import HotelForm from "../../components/HotelForm";
 
 const styles = (theme) => ({
     root: {
@@ -63,6 +64,8 @@ class Administration extends React.Component {
             return (<ReservationsList/>)
         } else if (this.state.view === 'roomTypeForm') {
             return (<RoomTypeForm/>)
+        } else if (this.state.view === 'hotelForm') {
+            return (<HotelForm/>)
         } else {
             return null;
         }

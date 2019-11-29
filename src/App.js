@@ -11,10 +11,15 @@ import Reservation from "./views/Reservation";
 import HotelInfo from "./views/HotelInfo";
 import MisReservas from "./views/Reservations";
 import Administration from "./views/abm/Administration";
-import Hotels from "./views/Hotels";
 
 Array.prototype.remove = function (element) {
     var index = this.indexOf(element);
+    if (index > -1) {
+        this.splice(index, 1);
+    }
+}
+
+Array.prototype.removeByIndex = function (index) {
     if (index > -1) {
         this.splice(index, 1);
     }
@@ -49,5 +54,3 @@ export default class App extends React.Component {
         );
     }
 }
-
-export default App;
